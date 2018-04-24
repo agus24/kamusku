@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBahasasTable extends Migration
+class CreateKatasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateBahasasTable extends Migration
      */
     public function up()
     {
-        Schema::create('bahasa', function (Blueprint $table) {
+        Schema::create('kata', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nama');
-            $table->string('daerah');
+            $table->string('kata');
+            $table->integer('bahasa_id')->unsigned();
+            $table->text('contoh_kalimat');
             $table->timestamps();
+
+            $table->foreign('bahasa_id')->references('id')->on('bahasa');
         });
     }
 
@@ -28,6 +31,6 @@ class CreateBahasasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bahasa');
+        Schema::dropIfExists('kata');
     }
 }

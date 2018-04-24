@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBahasasTable extends Migration
+class CreateTranslateRatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateBahasasTable extends Migration
      */
     public function up()
     {
-        Schema::create('bahasa', function (Blueprint $table) {
+        Schema::create('translate_rates', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nama');
-            $table->string('daerah');
+            $table->integer('user_id')->unsigned();
+            $table->integer('translate_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('translate_id')->references('id')->on('translate');
         });
     }
 
@@ -28,6 +31,6 @@ class CreateBahasasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bahasa');
+        Schema::dropIfExists('translate_rates');
     }
 }

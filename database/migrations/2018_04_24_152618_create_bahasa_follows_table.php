@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBahasasTable extends Migration
+class CreateBahasaFollowsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,17 @@ class CreateBahasasTable extends Migration
      */
     public function up()
     {
-        Schema::create('bahasa', function (Blueprint $table) {
+        Schema::create('bahasa_follows', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nama');
-            $table->string('daerah');
+            $table->integer('user_id')->unsigned();
+            $table->integer('bahasa_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('bahasa_id')->references('id')->on('bahasa');
         });
+
+
     }
 
     /**
@@ -28,6 +33,6 @@ class CreateBahasasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bahasa');
+        Schema::dropIfExists('bahasa_follows');
     }
 }
