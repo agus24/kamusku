@@ -11,14 +11,19 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', "HomeController@index");
 
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
+
+Route::resource('bahasa', 'BahasaController');
+Route::resource('kata', "KataController");
+Route::resource('translate', "TranslateController");
+
+Route::get('bahasa/follow/{id}', "BahasaController@follow");
+Route::get('bahasa/unfollow/{id}', "BahasaController@unfollow");
 
 Auth::routes();
 

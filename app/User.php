@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use DB;
 
 class User extends \TCG\Voyager\Models\User
 {
@@ -26,4 +27,28 @@ class User extends \TCG\Voyager\Models\User
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function hasFollowBahasa($id)
+    {
+        return DB::table('bahasa_follows')->where('user_id', $this->id)
+                ->where("bahasa_id", $id)->count() > 0;
+    }
+
+    public function follow($id)
+    {
+        $ins = DB::table("bahasa_follows")->insert([
+            "user_id" => $this->id,
+            "bahasa_id" => $id
+        ]);
+
+        return ($ins) ? true : false;
+    }
+
+    public function unfollow($id)
+    {
+        $del = DB::table('bahasa_follows')->where('user_id', $this->id)
+                ->where("bahasa_id", $id)->delete();
+
+        return ($del) ? true : false;
+    }
 }

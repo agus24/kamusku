@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Bahasa;
 use Illuminate\Http\Request;
-use Auth;
 
-class BahasaController extends Controller
+class KataController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +13,7 @@ class BahasaController extends Controller
      */
     public function index()
     {
-        $bahasa = Bahasa::all();
-        return view('bahasa.index', compact('bahasa'));
+        //
     }
 
     /**
@@ -43,10 +40,10 @@ class BahasaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Model\Bahasa  $bahasa
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Bahasa $bahasa)
+    public function show($id)
     {
         //
     }
@@ -54,10 +51,10 @@ class BahasaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Model\Bahasa  $bahasa
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Bahasa $bahasa)
+    public function edit($id)
     {
         //
     }
@@ -66,10 +63,10 @@ class BahasaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Model\Bahasa  $bahasa
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Bahasa $bahasa)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -77,29 +74,11 @@ class BahasaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Model\Bahasa  $bahasa
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bahasa $bahasa)
+    public function destroy($id)
     {
         //
-    }
-
-    public function follow($id)
-    {
-        if(Auth::guest()) {
-            abort(404);
-        }
-        $user = Auth::user()->follow($id);
-        return redirect()->back();
-    }
-
-    public function unfollow($id)
-    {
-        if(Auth::guest()) {
-            abort(404);
-        }
-        $user = Auth::user()->unfollow($id);
-        return redirect()->back();
     }
 }
