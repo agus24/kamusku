@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Model\Bahasa;
+use App\Bahasa;
 use Illuminate\Http\Request;
+use Auth;
 
 class BahasaController extends Controller
 {
@@ -14,7 +15,8 @@ class BahasaController extends Controller
      */
     public function index()
     {
-        //
+        $bahasa = Bahasa::all();
+        return view('bahasa.index', compact('bahasa'));
     }
 
     /**
@@ -81,5 +83,23 @@ class BahasaController extends Controller
     public function destroy(Bahasa $bahasa)
     {
         //
+    }
+
+    public function follow($id)
+    {
+        if(Auth::guest()) {
+            abort(404);
+        }
+        $user = Auth::user()->follow($id);
+        return redirect()->back();
+    }
+
+    public function unfollow($id)
+    {
+        if(Auth::guest()) {
+            abort(404);
+        }
+        $user = Auth::user()->unfollow($id);
+        return redirect()->back();
     }
 }
