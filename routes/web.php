@@ -38,7 +38,12 @@ Route::get('/parse', function() {
         if($key != 0) {
             echo ",";
         }
-        echo "'".$value->kata."'";
+        echo "'".$value->kata."' ";
     }
     echo "]";
+});
+
+Route::get('/push', function() {
+    $kata = require __DIR__."kata.php";
+    dd($kata);
 });
