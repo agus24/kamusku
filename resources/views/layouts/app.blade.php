@@ -20,6 +20,7 @@
     {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/flat-ui.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/jquery-ui.min.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -50,17 +51,17 @@
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown" role="menu">
+                                    <li>
+                                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                        </a>
+                                    </li>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
-                                </div>
+                                </ul>
                             </li>
                         @endguest
                     </ul>
@@ -71,10 +72,14 @@
             @yield('content')
         </main>
     </div>
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     <script src="https://unpkg.com/popper.js@1.14.1/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
     <script src="http://vjs.zencdn.net/6.6.3/video.js"></script>
-    <script src="{{ asset('js/application.js') }}" defer></script>
-    <script src="{{ asset('js/flat-ui.js') }}" defer></script>
+    <script src="{{ asset('js/application.js') }}"></script>
+    <script src="{{ asset('js/flat-ui.js') }}"></script>
+    <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
+
+    @yield('script')
 </body>
 </html>

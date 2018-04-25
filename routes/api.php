@@ -16,3 +16,7 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::resource('bahasa', "Api\\BahasaController");
+Route::resource('kata', "Api\\KataController");
+Route::post('getTranslate', "TranslateController@getTranslateData");

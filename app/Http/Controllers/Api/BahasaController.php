@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Bahasa;
-use App\Katum as Kata;
-use App\Translate;
 
-class TranslateController extends Controller
+class BahasaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +15,7 @@ class TranslateController extends Controller
      */
     public function index()
     {
-        $bahasa = Bahasa::all();
-        $kata = Kata::where('bahasa_id', 1)->select('id','kata as label', 'kata as value')->get();
-        return view('translate.index', compact('bahasa', 'kata'));
+        //
     }
 
     /**
@@ -50,7 +47,7 @@ class TranslateController extends Controller
      */
     public function show($id)
     {
-        //
+        return Bahasa::find($id);
     }
 
     /**
@@ -85,28 +82,5 @@ class TranslateController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function getTranslateData(Request $request)
-    {
-        $status = 200;
-        $data = $request->params;
-        $translate = new Translate;
-        $result = $translate->with('tujuanKata', 'dariKata', 'user')
-            ->join('kata as a', 'a.id','dari')
-            ->join('kata as b', 'b.id','tujuan')
-            ->where('a.bahasa_id', $data['dari'])
-            ->where('b.bahasa_id', $data['ke'])
-            ->where('a.kata',"like", "%".$data['kata']."%")
-            ->orWhere('b.kata', "like", "%".$data['kata']."%")
-            ->orderBy('rate','desc')
-            ->select('translate.*')
-            ->get();
-
-        if(!$result) {
-            $status = 504;
-        }
-
-        return response()->json($result, $status);
     }
 }
