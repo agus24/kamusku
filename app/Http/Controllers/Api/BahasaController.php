@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Katum as Kata;
+use App\Http\Controllers\Controller;
+use App\Bahasa;
 
-class KataController extends Controller
+class BahasaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -46,13 +47,7 @@ class KataController extends Controller
      */
     public function show($id)
     {
-        $kata = Kata::where('bahasa_id', $id);
-        if(isset($_GET['search'])) {
-            $search = $_GET['search'];
-            $kata = $kata->where('kata', 'like', "%$search%");
-        }
-        $kata = $kata->paginate(15);
-        return view('kata.show', compact('kata'));
+        return Bahasa::find($id);
     }
 
     /**

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Katum as Kata;
 
 class KataController extends Controller
@@ -12,9 +13,13 @@ class KataController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if(($request->input('bahasa_id') == NULL)) {
+            return resposne()->json([],404);
+        }
+
+        return response()->json(Kata::where('bahasa_id', $request->bahasa_id)->select('id','kata as value', 'kata as label')->get());
     }
 
     /**
@@ -46,13 +51,7 @@ class KataController extends Controller
      */
     public function show($id)
     {
-        $kata = Kata::where('bahasa_id', $id);
-        if(isset($_GET['search'])) {
-            $search = $_GET['search'];
-            $kata = $kata->where('kata', 'like', "%$search%");
-        }
-        $kata = $kata->paginate(15);
-        return view('kata.show', compact('kata'));
+        //
     }
 
     /**
