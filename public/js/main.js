@@ -54,12 +54,14 @@ function getTranslateData(dari, ke, kata) {
             let topResult = data[0];
             $('#topResult').append(topResult.dari_kata.bahasa_id != ke ? topResult.tujuan_kata.kata : topResult.dari_kata.kata);
             $('#detail-ke').empty();
-            let html = `<span style="font-size:16px; font-weight:bold">Terjemahan Lain</span><ul>`;
+            let html = `<span style="font-size:16px; font-weight:bold">Terjemahan Lain</span><ul style="list-style: none;">`;
             if(data.length > 1) {
+                let i = 0;
                 $.each(data, (key,value) => {
-                    html += `
-                    <li>`+value.tujuan_kata.kata+`<li>
-                    `;
+                    if(i != 0) {
+                        html += `<li>`+value.tujuan_kata.kata+`<li>`;
+                    }
+                    i++;
                 });
                 html += `</ul>`;
                 $('#detail-ke').append(html);

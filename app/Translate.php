@@ -9,6 +9,7 @@ use App\User;
 class Translate extends Model
 {
     protected $table = "translate";
+    protected $fillable = ["dari", "tujuan", "user_id", "rate"];
 
     public function dariKata()
     {

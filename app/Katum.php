@@ -19,4 +19,9 @@ class Katum extends Model
     {
         return $this->hasMany(Translate::class, "dari", "id");
     }
+
+    public function jumlahTranslate()
+    {
+        return \DB::table('translate')->where('dari', $this->id)->orWhere('tujuan', $this->id)->count();
+    }
 }

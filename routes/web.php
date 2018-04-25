@@ -20,7 +20,9 @@ Route::group(['prefix' => 'admin'], function () {
 
 Route::resource('bahasa', 'BahasaController');
 Route::resource('kata', "KataController");
-Route::resource('translate', "TranslateController");
+Route::resource('translate', "TranslateController")->except('create','store');
+Route::get('translate/create/{bahasa_id}', "TranslateController@create");
+Route::post('translate/create/{bahasa_id}', "TranslateController@store");
 
 Route::get('bahasa/follow/{id}', "BahasaController@follow");
 Route::get('bahasa/unfollow/{id}', "BahasaController@unfollow");

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Bahasa;
 use App\Katum as Kata;
 use App\Translate;
+use Auth;
 
 class TranslateController extends Controller
 {
@@ -26,9 +27,11 @@ class TranslateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($kata_id)
     {
-        //
+        $bahasa = Bahasa::all();
+        $kata = Kata::find($kata_id);
+        return view('translate.create', compact('bahasa', 'kata'));
     }
 
     /**
@@ -37,9 +40,25 @@ class TranslateController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $kata_id)
     {
-        //
+        $this->validate($request, [
+            "kata" => "required",
+            "ke_bahasa" => "required|integer|different:bahasa_asal",
+            "bahasa_asal" => "required|integer",
+            "translate" => "required"
+        ]);
+        $kata = new Kata;
+        $kata->bahasa_id = $request->ke_bahasa;
+        $kata->kata = $request->translate;
+        $kata->save();
+        Translate::create([
+            "dari" => $kata_id,
+            "tujuan" => $kata->id,
+            "user_id" => Auth::user()->id
+        ]);
+
+        return redirect("/");
     }
 
     /**
