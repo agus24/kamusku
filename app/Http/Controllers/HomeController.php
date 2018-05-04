@@ -36,7 +36,7 @@ class HomeController extends Controller
                 'tujuanKata' => function ($child) {
                         return $child->with(["bahasa"]);
                     },
-            ])->paginate(20);
+            ])->orderBy('created_at','desc')->paginate(20);
         return response()->json($translate);
     }
 }
