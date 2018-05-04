@@ -28,7 +28,7 @@ function cekScroll() {
     let scroll = document.documentElement.scrollTop
     let max = document.body.offsetHeight - window.innerHeight;
     if(scroll >= max) {
-        document.documentElement.scrollTop = scroll - 100;
+        // document.documentElement.scrollTop = scroll - 100;
         if(!loading) {
             loadTranslate();
         }
