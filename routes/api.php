@@ -12,6 +12,9 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Content-Type, X-Requested-With, X-XSRF-TOKEN, Authorization, Cache-Control');
+header('Access-Control-Allow-Methods: GET,PUT,POST,DELETE');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -20,3 +23,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::resource('bahasa', "Api\\BahasaController");
 Route::resource('kata', "Api\\KataController");
 Route::post('getTranslate', "TranslateController@getTranslateData");
+Route::get('loadTranslate', 'HomeController@load');

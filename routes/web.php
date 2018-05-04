@@ -43,7 +43,23 @@ Route::get('/parse', function() {
     echo "]";
 });
 
-Route::get('/push', function() {
-    $kata = require __DIR__."kata.php";
-    dd($kata);
+Route::get('/data', function() {
+    ini_set('max_execution_time', -1);
+    $output = json_decode(file_get_contents(storage_path("/app/public/sunda.json")),true);
+    foreach($output as $kata) {
+        $k = App\Katum::find($kata['id'])->id;
+        if(App\Katum::find($kata['id'])->kata != $kata['kata']) {
+            $kt = App\Katum::create([
+                "kata" => $kata['kata'],
+                "bahasa_id" => 2,
+                "contoh_kalimat" => ""
+            ]);
+            $tr = App\Translate::create([
+                "dari" => $kata['id'],
+                "tujuan" => $kt->id,
+                "user_id" => 1,
+                "rate" => 0
+            ]);
+        }
+    }
 });

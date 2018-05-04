@@ -24,7 +24,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $translate = Translate::paginate(20);
-        return view('home', compact('translate'));
+        return view('home');
+    }
+
+    public function load()
+    {
+        $translate = Translate::with(['user',
+                'dariKata' => function ($child) {
+                        return $child->with(["bahasa"]);
+                    },
+                'tujuanKata' => function ($child) {
+                        return $child->with(["bahasa"]);
+                    },
+            ])->paginate(20);
+        return response()->json($translate);
     }
 }
