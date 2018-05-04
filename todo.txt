@@ -1,0 +1,6 @@
+- Comment di home page
+- rate Translate
+- profile user
+- login with fb/twitter
+- input contoh kalimat saat buat translate
+- tampilkan contoh kalimaat saat translate
