@@ -63,3 +63,9 @@ Route::get('/data', function() {
         }
     }
 });
+
+Route::Get('test', function() {
+    $translate = App\Translate::find(24414);
+    $output = $translate->rated;
+    dd($output);
+});

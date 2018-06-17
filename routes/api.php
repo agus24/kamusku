@@ -24,3 +24,5 @@ Route::resource('bahasa', "Api\\BahasaController");
 Route::resource('kata', "Api\\KataController");
 Route::post('getTranslate', "TranslateController@getTranslateData");
 Route::get('loadTranslate', 'HomeController@load');
+
+Route::post('like', "TranslateController@like");

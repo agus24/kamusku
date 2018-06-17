@@ -51,4 +51,35 @@ class User extends \TCG\Voyager\Models\User
 
         return ($del) ? true : false;
     }
+
+    public function hasLike($translate_id, $id = false)
+    {
+        if(!$id) {
+            $id = $this->id;
+        }
+        return DB::table('translate_rates')->where('user_id', $id)->where('translate_id', $translate_id)->get()->count() > 0;
+    }
+
+    public function unlikeTranslate($translate_id, $id = false)
+    {
+        if(!$id) {
+            $id = $this->id;
+        }
+
+        DB::table('translate_rates')->where('user_id', $id)->where('translate_id', $translate_id)->delete();
+        DB::table('translate')->where('id', $translate_id)->decrement('rate');
+    }
+
+    public function likeTranslate($translate_id, $id = false)
+    {
+        if(!$id) {
+            $id = $this->id;
+        }
+
+        DB::table('translate_rates')->where('user_id', $id)->where('translate_id', $translate_id)->insert([
+            "translate_id" => $translate_id,
+            "user_id" => $id
+        ]);
+        DB::table('translate')->where('id', $translate_id)->increment('rate');
+    }
 }

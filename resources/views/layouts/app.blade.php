@@ -21,6 +21,8 @@
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/flat-ui.css') }}" rel="stylesheet">
     <link href="{{ asset('css/jquery-ui.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/fontawesome-all.min.css') }}" rel="stylesheet">
+    @yield("style")
 </head>
 <body>
     <div id="app">
@@ -72,6 +74,12 @@
             @yield('content')
         </main>
     </div>
+    <script>
+        let User = {};
+        @if(!Auth::guest())
+            User = {!! Auth::user()->toJson() !!}
+        @endif
+    </script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="https://unpkg.com/popper.js@1.14.1/dist/umd/popper.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>

@@ -1,5 +1,26 @@
 @extends('layouts.app')
+@section('style')
+<style>
+    .like-icon .off {
+        color:gray;
+        cursor:pointer;
+    }
 
+    .like-icon .on {
+        color:red;
+        cursor:pointer;
+    }
+    .comment-icon .off {
+        color:gray;
+        cursor:pointer;
+    }
+
+    .comment-icon .on {
+        color:black;
+        cursor:pointer;
+    }
+</style>
+@endsection
 @section('content')
     <div class="row justify-content-center">
         <div class="col-md-10 col-md-offset-1">
@@ -53,6 +74,10 @@ function loadTranslate() {
 function putToHtml(data) {
     let html = ``;
     $.each(data, (key,value) => {
+        let liked = "off";
+        if(User != {}) {
+            liked = (value.rated.find((data) => { return data.user_id == User.id}) != undefined) ? "on" : "off";
+        }
         html += `
             <div class="row">
                 <div class="col-md-1">
@@ -64,8 +89,20 @@ function putToHtml(data) {
                     </a>
                 </div>
                 <div class="col-md-11">
-                    <b>`+ value.dari_kata.kata +` - `+ value.tujuan_kata.kata +`</b><Br>
-                    Translate dari <i>`+ value.dari_kata.bahasa.nama +`</i> ke <i>`+ value.tujuan_kata.bahasa.nama +`</i><br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>`+ value.dari_kata.kata +` - `+ value.tujuan_kata.kata +`</b><Br>
+                            Translate dari <i>`+ value.dari_kata.bahasa.nama +`</i> ke <i>`+ value.tujuan_kata.bahasa.nama +`</i><br>
+                        </div>
+                        @if(!Auth::guest())
+                            <div class="col-md-2 like-icon" onclick='toggleLike(this,`+value.id+`)'>
+                                <span class="`+liked+`"><i class="fas fa-heart"><span>`+value.rate+`</span></i> Suka</span>
+                            </div>
+                        @endif
+                        <div class="col-md-2 comment-icon" onclick='toggleIcon(this)'>
+                            <span class="off"><i class="fas fa-comments"></i> Komentar</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <hr>
@@ -73,6 +110,37 @@ function putToHtml(data) {
     });
     $('#translate-body').append(html);
     loading = false;
+}
+
+function toggleLike(e, translate_id) {
+    $.ajax({
+        async : true,
+        url : "{{ url('api/like') }}",
+        data : {
+            translate_id : translate_id,
+            user_id : User.id
+        },
+        type : "POST"
+    }).done((result) => {
+        console.log(result);
+        let span = $(e).find('span');
+        $(span).find('span').html(result.rate);
+        if($(span).hasClass('on')) {
+            $(span).removeClass('on').addClass('off');
+        } else {
+            $(span).removeClass('off').addClass('on');
+        }
+    }).error((error) => {
+        console.log('error')
+    });
+}
+function toggleIcon(e) {
+    let span = $(e).find('span');
+    if($(span).hasClass('on')) {
+        $(span).removeClass('on').addClass('off');
+    } else {
+        $(span).removeClass('off').addClass('on');
+    }
 }
 </script>
 @endsection
