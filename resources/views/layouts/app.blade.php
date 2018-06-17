@@ -76,6 +76,7 @@
     </div>
     <script>
         let User = {};
+        let Url = "{{ url('/') }}";
         @if(!Auth::guest())
             User = {!! Auth::user()->toJson() !!}
         @endif

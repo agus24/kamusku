@@ -13,7 +13,7 @@ $(document).ready(function() {
 
 function loadKata(bahasa) {
     let id = bahasa.val();
-    axios.get('/api/kata/', {
+    axios.get(Url + '/api/kata/', {
         params: {
           bahasa_id : id
         }

@@ -130,7 +130,7 @@ function toggleLike(e, translate_id) {
         } else {
             $(span).removeClass('off').addClass('on');
         }
-    }).error((error) => {
+    }).fail((error) => {
         console.log('error')
     });
 }
