@@ -12,8 +12,9 @@ $(document).ready(function() {
 });
 
 function loadKata(bahasa) {
+    console.log('masuk')
     let id = bahasa.val();
-    axios.get(Url + '/api/kata/', {
+    axios.get(baseURI + '/api/kata/', {
         params: {
           bahasa_id : id
         }
@@ -26,8 +27,7 @@ function loadKata(bahasa) {
     });
 }
 
-function makeAutoComplete(textBox, data)
-{
+function makeAutoComplete(textBox, data) {
     $('#text-'+textBox).autocomplete({
         source : data,
         minLength : 3,
@@ -40,7 +40,8 @@ function makeAutoComplete(textBox, data)
 }
 
 function getTranslateData(dari, ke, kata) {
-    axios.post('/api/getTranslate/', {
+    console.log(Url);
+    axios.post(baseURI + '/api/getTranslate/', {
         params: {
             dari : dari,
             ke : ke,

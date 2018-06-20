@@ -30,6 +30,7 @@ Route::get('bahasa/unfollow/{id}', "BahasaController@unfollow");
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/profile/{user}', 'ProfileController@index');
 
 Route::get('/parse', function() {
     $kata = App\Katum::where('bahasa_id', 1)->orderBy('id','asc')->get();
