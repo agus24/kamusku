@@ -215,10 +215,10 @@ String.prototype.repeat = function (num) {
     }
 
     // Timepicker
-    $('#timepicker-01').timepicker({
-      className: 'timepicker-primary',
-      timeFormat: 'h:i A'
-    });
+    // $('#timepicker-01').timepicker({
+    //   className: 'timepicker-primary',
+    //   timeFormat: 'h:i A'
+    // });
 
     // Switches
     if ($('[data-toggle="switch"]').length) {

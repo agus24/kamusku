@@ -63,7 +63,7 @@ function loadTranslate() {
     $.ajax({
         async : true,
         url : next_page_url,
-        type : "GET"
+        type : "get"
     }).done((result) => {
         next_page_url = result.next_page_url
         console.log(result)

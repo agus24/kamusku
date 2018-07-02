@@ -17,7 +17,7 @@
                 Profile
                 @if(!Auth::guest())
                     @if(Auth::user()->id == $user->id)
-                        | <a href="{{ url('profile/edit') }}" class="btn btn-primary btn-sm">Edit</a>
+                        | <a href="{{ url('profile/'.$user->id.'/edit') }}" class="btn btn-primary btn-sm">Edit</a>
                     @endif
                 @endif
             </h5>

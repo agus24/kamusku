@@ -40,16 +40,16 @@ function makeAutoComplete(textBox, data) {
 }
 
 function getTranslateData(dari, ke, kata) {
-    console.log(Url);
-    axios.post(baseURI + '/api/getTranslate/', {
-        params: {
-            dari : dari,
-            ke : ke,
-            kata : kata
-        }
-    }).then((response) => {
-        let data = response.data
+    console.log(baseURI + '/api/getTranslate/?dari='+dari+"&ke="+ke+"&kata="+kata);
+    console.log("send post");
+    $.ajax({
+        "async": true,
+        "url" : baseURI + '/api/getTranslate/?dari='+dari+"&ke="+ke+"&kata="+kata,
+        "type" : "get"
+    }).done((response) => {
+        let data = response
         let output = $('#detail-ke');
+        console.log(response);
         if(data.length != 0) {
             $('#topResult').empty();
             let topResult = data[0];
@@ -68,7 +68,7 @@ function getTranslateData(dari, ke, kata) {
                 $('#detail-ke').append(html);
             }
         }
-    }).catch((error) => {
-        alert(error);
-    });
+    }).fail((error) => {
+        alert(error)
+    })
 }

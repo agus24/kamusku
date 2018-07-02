@@ -110,14 +110,14 @@ class TranslateController extends Controller
     public function getTranslateData(Request $request)
     {
         $status = 200;
-        $data = $request->params;
+        $data = $request;
         $translate = new Translate;
         $result = $translate->with('tujuanKata', 'dariKata', 'user')
             ->join('kata as a', 'a.id','dari')
             ->join('kata as b', 'b.id','tujuan')
             ->where('a.bahasa_id', $data['dari'])
             ->where('b.bahasa_id', $data['ke'])
-            ->where('a.kata',"like", $data['kata'])
+            ->where('a.kata', "like", $data['kata'])
             ->orWhere('b.kata', "like", $data['kata'])
             ->orderBy('rate','desc')
             ->select('translate.*')

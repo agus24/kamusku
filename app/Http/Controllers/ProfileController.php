@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Auth;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -14,40 +15,7 @@ class ProfileController extends Controller
      */
     public function index(User $user)
     {
-        // dd($user);
         return view('profile.index', compact('user'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -58,7 +26,13 @@ class ProfileController extends Controller
      */
     public function edit($id)
     {
-        //
+        if(Auth::user()->id != $id || Auth::guest())
+        {
+            abort(404);
+        }
+
+        $user = User::find($id);
+        return view('profile.edit', compact('user', 'id'));
     }
 
     /**
@@ -70,7 +44,22 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            "nama" => "required",
+            "password" => "required|same:password_confirmation",
+            "password_confirmation" => "required"
+        ]);
+
+        $file = $request->file('img');
+        $file->move(storage_path('app/public/users/edit/'), date("Ymd")."_".$file->getClientOriginalName());
+
+        $user = User::find($id);
+        $user->name = $request->nama;
+        $user->password = bcrypt($request->password);
+        $user->about_me = $request->about_me;
+        $user->avatar = "users\\edit\\".date("Ymd")."_".$file->getClientOriginalName();
+        $user->save();
+        return redirect('/');
     }
 
     /**
