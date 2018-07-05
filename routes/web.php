@@ -30,36 +30,6 @@ Route::get('bahasa/unfollow/{id}', "BahasaController@unfollow");
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('/parse', function() {
-    $kata = App\Katum::where('bahasa_id', 1)->orderBy('id','asc')->get();
-    echo "[";
-    foreach($kata as $key => $value) {
-        if($key != 0) {
-            echo ",";
-        }
-        echo "'".$value->kata."' ";
-    }
-    echo "]";
-});
-
-Route::get('/data', function() {
-    ini_set('max_execution_time', -1);
-    $output = json_decode(file_get_contents(storage_path("/app/public/sunda.json")),true);
-    foreach($output as $kata) {
-        $k = App\Katum::find($kata['id'])->id;
-        if(App\Katum::find($kata['id'])->kata != $kata['kata']) {
-            $kt = App\Katum::create([
-                "kata" => $kata['kata'],
-                "bahasa_id" => 2,
-                "contoh_kalimat" => ""
-            ]);
-            $tr = App\Translate::create([
-                "dari" => $kata['id'],
-                "tujuan" => $kt->id,
-                "user_id" => 1,
-                "rate" => 0
-            ]);
-        }
-    }
-});
+Route::get('/profile/{user}', 'ProfileController@index');
+Route::get('profile/{user}/edit', 'ProfileController@edit');
+Route::post('profile/{user}', 'ProfileController@update');

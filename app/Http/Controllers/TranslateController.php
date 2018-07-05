@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Bahasa;
 use App\Katum as Kata;
 use App\Translate;
+use App\User;
 use Auth;
 
 class TranslateController extends Controller
@@ -109,14 +110,14 @@ class TranslateController extends Controller
     public function getTranslateData(Request $request)
     {
         $status = 200;
-        $data = $request->params;
+        $data = $request;
         $translate = new Translate;
         $result = $translate->with('tujuanKata', 'dariKata', 'user')
             ->join('kata as a', 'a.id','dari')
             ->join('kata as b', 'b.id','tujuan')
             ->where('a.bahasa_id', $data['dari'])
             ->where('b.bahasa_id', $data['ke'])
-            ->where('a.kata',"like", $data['kata'])
+            ->where('a.kata', "like", $data['kata'])
             ->orWhere('b.kata', "like", $data['kata'])
             ->orderBy('rate','desc')
             ->select('translate.*')
@@ -127,5 +128,17 @@ class TranslateController extends Controller
         }
 
         return response()->json($result, $status);
+    }
+
+    public function like(Request $request)
+    {
+        $translate_id = $request->translate_id;
+        $user = User::find($request->user_id);
+        if($user->hasLike($translate_id)) {
+            $user->unlikeTranslate($translate_id);
+        } else {
+            $user->likeTranslate($translate_id);
+        }
+        return response()->json(Translate::with(["rated", "user"])->find($translate_id));
     }
 }

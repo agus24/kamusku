@@ -12,8 +12,9 @@ $(document).ready(function() {
 });
 
 function loadKata(bahasa) {
+    console.log('masuk')
     let id = bahasa.val();
-    axios.get('/api/kata/', {
+    axios.get(baseURI + '/api/kata/', {
         params: {
           bahasa_id : id
         }
@@ -26,8 +27,7 @@ function loadKata(bahasa) {
     });
 }
 
-function makeAutoComplete(textBox, data)
-{
+function makeAutoComplete(textBox, data) {
     $('#text-'+textBox).autocomplete({
         source : data,
         minLength : 3,
@@ -40,15 +40,16 @@ function makeAutoComplete(textBox, data)
 }
 
 function getTranslateData(dari, ke, kata) {
-    axios.post('/api/getTranslate/', {
-        params: {
-            dari : dari,
-            ke : ke,
-            kata : kata
-        }
-    }).then((response) => {
-        let data = response.data
+    console.log(baseURI + '/api/getTranslate/?dari='+dari+"&ke="+ke+"&kata="+kata);
+    console.log("send post");
+    $.ajax({
+        "async": true,
+        "url" : baseURI + '/api/getTranslate/?dari='+dari+"&ke="+ke+"&kata="+kata,
+        "type" : "get"
+    }).done((response) => {
+        let data = response
         let output = $('#detail-ke');
+        console.log(response);
         if(data.length != 0) {
             $('#topResult').empty();
             let topResult = data[0];
@@ -67,7 +68,7 @@ function getTranslateData(dari, ke, kata) {
                 $('#detail-ke').append(html);
             }
         }
-    }).catch((error) => {
-        alert(error);
-    });
+    }).fail((error) => {
+        alert(error)
+    })
 }

@@ -25,4 +25,9 @@ class Translate extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function rated()
+    {
+        return $this->hasMany(Rate::class, 'translate_id', 'id');
+    }
 }
