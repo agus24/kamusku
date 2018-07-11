@@ -19,6 +19,24 @@
         color:black;
         cursor:pointer;
     }
+
+    .comment h5 {
+        font-size: 20px;
+    }
+
+    .comment p {
+        color: black;
+        font-size: 15px;
+    }
+    .ganjil {
+        background-color: #bdbdff;
+        padding: 5px 5px 5px 5px;
+    }
+
+    .genap {
+        background-color: white;
+        padding: 5px 5px 5px 5px;
+    }
 </style>
 @endsection
 @section('content')
@@ -99,8 +117,11 @@ function putToHtml(data) {
                                 <span class="`+liked+`"><i class="fas fa-heart"><span>`+value.rate+`</span></i> Suka</span>
                             </div>
                         @endif
-                        <div class="col-md-2 comment-icon" onclick='toggleIcon(this)'>
+                        <div class="col-md-2 comment-icon" onclick='toggleComment(this, `+value.id+`)'>
                             <span class="off"><i class="fas fa-comments"></i> Komentar</span>
+                        </div>
+                        <div class="col-md-12">
+                            <span id="comment-section`+value.id+`"></span>
                         </div>
                     </div>
                 </div>
@@ -134,13 +155,107 @@ function toggleLike(e, translate_id) {
         console.log('error')
     });
 }
-function toggleIcon(e) {
+
+function toggleComment(e, id) {
     let span = $(e).find('span');
     if($(span).hasClass('on')) {
+        el.empty();
         $(span).removeClass('on').addClass('off');
     } else {
+        loadComment(id);
         $(span).removeClass('off').addClass('on');
     }
+}
+
+function loadComment(id)
+{
+    $.ajax({
+        async: true,
+        url: "{{ url('api/loadComment') }}",
+        data: {
+            translate_id : id,
+            user_id: User.id
+        },
+        type: "POST"
+    }).done(result => {
+        console.log(result);
+        el = $("#comment-section"+id);
+        el.empty();
+        if(result.length == 0) {
+            showNoComment(el, id);
+        } else {
+            generateComment(el, result, id);
+        }
+    }).fail((error) => {
+        alert('ada yang salah di sistem saat mencoba mengambil data komentar.')
+    });
+}
+
+function showNoComment(el, id)
+{
+    let uniq = Math.floor(Math.random()*100000);
+    @if(!Auth::guest())
+        el.append("<textarea id='comment-box_"+uniq+"' class='form-control' placeholder='Tulis Komentar Anda'></textarea><br>");
+    @endif
+    el.append("<p>No Comment</p>");
+    plantKey("#comment-box_"+uniq, id);
+}
+
+function plantKey(el, id) {
+    console.log(el);
+    $(el).focus(() => {
+        $(this).keyup((e) => {
+            if(e.keyCode == 13) {
+                let comment = $(el).val();
+                postComment(comment, $(el), id);
+            }
+        });
+    });
+}
+
+function postComment(comment, el, id)
+{
+    el.val('');
+    $.ajax({
+        async :false,
+        url: "{{ url('api/postComment') }}",
+        data: {
+            comment: comment,
+            translate_id: id,
+            user_id: User.id
+        },
+        type: "POST"
+    }).done(result => {
+        if(result == 'sukses') {
+            loadComment(id);
+        }
+        console.log(result)
+    });
+}
+
+function generateComment(el, data, id)
+{
+    let uniq = Math.floor(Math.random()*100000);
+    console.log(data);
+    let html = '';
+    @if(!Auth::guest())
+    el.append("<textarea id='comment-box_"+uniq+"' class='form-control' placeholder='Tulis Komentar Anda'></textarea><br>");
+    @endif
+    let i = 1;
+    let tipe = 'ganjil';
+    $.each(data, (key, value) => {
+        if(i%2 != 0 ) { tipe = "ganjil" } else { tipe = "genap" }
+        html += `<div class="comment `+tipe+`">`
+        html += `
+            <h5><b>`+value.user.name+`</b></h5>
+            <span style="font-size:12px">`+value.created_at+`</span>
+            <p>`+value.comment+`</p>
+        `
+        html += "</div>";
+        i++;
+    });
+    el.append(html);
+    plantKey("#comment-box_"+uniq, id);
 }
 </script>
 @endsection

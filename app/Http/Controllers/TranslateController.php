@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Bahasa;
 use App\Katum as Kata;
 use App\Translate;
+use App\TranslateComment;
 use App\User;
 use Auth;
+use Illuminate\Http\Request;
 
 class TranslateController extends Controller
 {
@@ -140,5 +141,22 @@ class TranslateController extends Controller
             $user->likeTranslate($translate_id);
         }
         return response()->json(Translate::with(["rated", "user"])->find($translate_id));
+    }
+
+    public function loadComment(Request $request)
+    {
+        $comments = TranslateComment::instance()->getComment($request->translate_id);
+        return $comments;
+    }
+
+    public function postComment(Request $request)
+    {
+        $translateComment = new TranslateComment;
+        $translateComment->user_id = $request->user_id;
+        $translateComment->translate_id = $request->translate_id;
+        $translateComment->comment = $request->comment;
+        $translateComment->save();
+
+        return "sukses";
     }
 }
