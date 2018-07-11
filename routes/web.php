@@ -33,3 +33,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile/{user}', 'ProfileController@index');
 Route::get('profile/{user}/edit', 'ProfileController@edit');
 Route::post('profile/{user}', 'ProfileController@update');
+Route::get('terjemahan/{id}', 'HomeController@show');
+Route::post('comment/{id}', 'HomeController@store');
+Route::get('terjemahan/{id}/like', "HomeController@like");

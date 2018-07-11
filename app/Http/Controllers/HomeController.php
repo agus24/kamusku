@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\BahasaFollow;
 use App\Translate;
+use App\TranslateComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -49,5 +50,40 @@ class HomeController extends Controller
         $translate = $translate->select('translate.*')
             ->orderBy('created_at','desc')->paginate(5);
         return response()->json($translate);
+    }
+
+    public function show($id)
+    {
+        if(!Auth::guest()) {
+            $hasLike = Auth::user()->hasLike($id);
+        } else {
+            $hasLike = false;
+        }
+
+        $translate = (new Translate)->getWith()->where('id', $id)->get()[0];
+        return view('translate.show', compact('translate', 'id', 'hasLike'));
+    }
+
+    public function store(Request $request, $id)
+    {
+        $comment = new TranslateComment;
+        $comment->comment = $request->comment;
+        $comment->user_id = Auth::user()->id;
+        $comment->translate_id = $id;
+        $comment->save();
+
+        return redirect("terjemahan/".$id);
+    }
+
+    public function like(Request $request, $id)
+    {
+        $translate_id = $id;
+        $user = Auth::user();
+        if($user->hasLike($translate_id)) {
+            $user->unlikeTranslate($translate_id);
+        } else {
+            $user->likeTranslate($translate_id);
+        }
+        return redirect('terjemahan/'.$id);
     }
 }

@@ -112,7 +112,7 @@ function putToHtml(data) {
                 <div class="col-md-11">
                     <div class="row">
                         <div class="col-md-12">
-                            <b>`+ value.dari_kata.kata +` - `+ value.tujuan_kata.kata +`</b><Br>
+                            <a href="{{ url('terjemahan') }}/`+value.id+`"><b>`+ value.dari_kata.kata +` - `+ value.tujuan_kata.kata +`</b></a><Br>
                             Translate dari <i>`+ value.dari_kata.bahasa.nama +`</i> ke <i>`+ value.tujuan_kata.bahasa.nama +`</i><br>
                         </div>
                         @if(!Auth::guest())
