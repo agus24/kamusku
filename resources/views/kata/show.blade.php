@@ -4,7 +4,7 @@
     <div class="row justify-content-center">
         <div class="col-md-10 col-md-offset-1">
             <div class="card">
-                <div class="card-header">Daftar Kata Bahasa {{ $kata[0]->bahasa->nama }}</div>
+                <div class="card-header">Daftar Kata Bahasa {{ $bahasa->nama }}</div>
                 <div class="card-body">
                     <div class="col-md-2 float-right">
                         <form action="" method="GET">

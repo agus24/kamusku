@@ -30,4 +30,19 @@ class Translate extends Model
     {
         return $this->hasMany(Rate::class, 'translate_id', 'id');
     }
+
+    public function getWith()
+    {
+        return $this->with(['user',
+                'dariKata' => function ($child) {
+                        return $child->with(["bahasa"]);
+                    },
+                'tujuanKata' => function ($child) {
+                        return $child->with(["bahasa"]);
+                    },
+                'rated' => function($child) {
+                    return $child->with(["user"]);
+                }
+            ]);
+    }
 }

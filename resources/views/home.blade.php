@@ -81,7 +81,10 @@ function loadTranslate() {
     $.ajax({
         async : true,
         url : next_page_url,
-        type : "get"
+        type : "get",
+        data : {
+            user: User.id ? User.id : 0
+        }
     }).done((result) => {
         next_page_url = result.next_page_url
         console.log(result)
