@@ -49,15 +49,17 @@ class ProfileController extends Controller
             "password" => "required|same:password_confirmation",
             "password_confirmation" => "required"
         ]);
-
-        $file = $request->file('img');
-        $file->move(storage_path('app/public/users/edit/'), date("Ymd")."_".$file->getClientOriginalName());
-
         $user = User::find($id);
+
+        if($request->file('img')) {
+            $file = $request->file('img');
+            $file->move(storage_path('app/public/users/edit/'), date("Ymd")."_".$file->getClientOriginalName());
+            $user->avatar = "users\\edit\\".date("Ymd")."_".$file->getClientOriginalName();
+        }
+
         $user->name = $request->nama;
         $user->password = bcrypt($request->password);
         $user->about_me = $request->about_me;
-        $user->avatar = "users\\edit\\".date("Ymd")."_".$file->getClientOriginalName();
         $user->save();
         return redirect('/');
     }

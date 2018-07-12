@@ -32,6 +32,11 @@
                     <input type="text" class="form-control" name="translate">
                     {!! $errors->first('translate', '<p class="help-block">:message</p>') !!}
                 </div>
+                <div class="form-group {{ $errors->has('contoh_kalimat') ? 'has-error' : ''}}">
+                    <label>Contoh Kalimat</label>
+                    <textarea class="form-control" name="contoh_kalimat"></textarea>
+                    {!! $errors->first('translate', '<p class="help-block">:message</p>') !!}
+                </div>
                 <div class="form-group">
                     <input type="submit" class="btn btn-primary">
                 </div>

@@ -48,11 +48,13 @@ class TranslateController extends Controller
             "kata" => "required",
             "ke_bahasa" => "required|integer|different:bahasa_asal",
             "bahasa_asal" => "required|integer",
-            "translate" => "required"
+            "translate" => "required",
+            "contoh_kalimat" => "required"
         ]);
         $kata = new Kata;
         $kata->bahasa_id = $request->ke_bahasa;
         $kata->kata = $request->translate;
+        $kata->contoh_kalimat = $request->contoh_kalimat;
         $kata->save();
         Translate::create([
             "dari" => $kata_id,
