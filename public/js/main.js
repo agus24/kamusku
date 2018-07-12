@@ -50,10 +50,13 @@ function getTranslateData(dari, ke, kata) {
         let data = response
         let output = $('#detail-ke');
         console.log(response);
+        $('#topResult').empty();
         if(data.length != 0) {
-            $('#topResult').empty();
             let topResult = data[0];
+            console.log(topResult);
             $('#topResult').append(topResult.dari_kata.bahasa_id != ke ? topResult.tujuan_kata.kata : topResult.dari_kata.kata);
+            $('#topResult').append("<br><i>Contoh Kalimat :</i> <br>");
+            $('#topResult').append(topResult.dari_kata.bahasa_id != ke ? topResult.tujuan_kata.contoh_kalimat : topResult.dari_kata.contoh_kalimat);
             $('#detail-ke').empty();
             let html = `<span style="font-size:16px; font-weight:bold">Terjemahan Lain</span><ul style="list-style: none;">`;
             if(data.length > 1) {
@@ -67,6 +70,8 @@ function getTranslateData(dari, ke, kata) {
                 html += `</ul>`;
                 $('#detail-ke').append(html);
             }
+        } else {
+            $('#topResult').append("<span style='color:red'>Tidak ada terjemahan</span>");
         }
     }).fail((error) => {
         alert(error)
