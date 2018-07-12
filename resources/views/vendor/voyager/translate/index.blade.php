@@ -5,7 +5,7 @@
 @section('page_header')
     <div class="container-fluid">
         <h1 class="page-title">
-            Translate
+            <i class="voyager-study"></i> Translate
         </h1>
         @include('voyager::multilingual.language-selector')
     </div>
