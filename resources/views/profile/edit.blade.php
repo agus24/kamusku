@@ -57,6 +57,7 @@
 
 @section('script')
 <Script>
-    $('#myEditor').froalaEditor({toolbarInline: false})
+    $('#myEditor').froalaEditor({toolbarInline: false});
+    $('.fr-wrapper').find('div')[0].remove();
 </script>
 @endsection
