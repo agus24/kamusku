@@ -11,6 +11,51 @@ $(document).ready(function() {
     makeAutoComplete('dari', src);
 });
 
+function bahasaSelect(event, el, more = false) {
+    let toChange = $('#lastBhsDr');
+    if(more) {
+        $('#tipe').val('dari')
+        $('#modalBahasa').modal('show');
+    } else {
+        let id = $(el).attr('bahasa');
+        removeActive();
+        $(el).addClass('active');
+        $('#cmb-dari').val(id);
+    }
+}
+
+function bahasaSelectKe(event, el, more = false) {
+    let toChange = $('#lastBhsDr');
+    if(more) {
+        $('#tipe').val('ke')
+        $('#modalBahasa').modal('show');
+    } else {
+        let id = $(el).attr('bahasa');
+        removeActive(true);
+        $(el).addClass('active');
+        $('#cmb-ke').val(id);
+    }
+}
+
+function pilihBahasa(id, nama) {
+    let tipe = $('#tipe').val();
+    if(tipe == 'dari') {
+        $('#lastBhsDr').text(nama);
+        removeActive();
+        $('#lastBhsDr').addClass('active');
+        $('#lastBhsDr').attr('bahasa', id);
+        $('#cmb-dari').val(id);
+        $('#modalBahasa').modal('hide');
+    } else {
+        $('#lastBhsKe').text(nama);
+        removeActive(true);
+        $('#lastBhsKe').addClass('active');
+        $('#lastBhsKe').attr('bahasa', id);
+        $('#cmb-ke').val(id);
+        $('#modalBahasa').modal('hide');
+    }
+}
+
 function loadKata(bahasa) {
     console.log('masuk')
     let id = bahasa.val();
@@ -76,4 +121,18 @@ function getTranslateData(dari, ke, kata) {
     }).fail((error) => {
         alert(error)
     })
+}
+
+function removeActive(type = false) {
+    if(type) {
+        let tabs = $('.second .tablinks')
+        for(let i = 0 ; i < tabs.length ; i++) {
+            $(tabs[i]).removeClass('active');
+        }
+    } else {
+        let tabs = $('.first .tablinks')
+        for(let i = 0 ; i < tabs.length ; i++) {
+            $(tabs[i]).removeClass('active');
+        }
+    }
 }
