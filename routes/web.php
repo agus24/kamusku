@@ -36,4 +36,4 @@ Route::post('profile/{user}', 'ProfileController@update');
 Route::get('terjemahan/{id}', 'HomeController@show');
 Route::post('comment/{id}', 'HomeController@store');
 Route::get('terjemahan/{id}/like', "HomeController@like");
-
+Route::post('terjemahan/', "TranslateController@insertDB");

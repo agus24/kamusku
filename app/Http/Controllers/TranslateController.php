@@ -161,4 +161,37 @@ class TranslateController extends Controller
 
         return "sukses";
     }
+
+    public function getKata(Request $request)
+    {
+        return Kata::where('bahasa_id', $request->bahasa_id)->where('kata','like',"%{$request->text_kata}%")->with(["bahasa"])->get();
+    }
+
+    public function insertDB(Request $request)
+    {
+        $this->validate($request, [
+            "dari_bahasa" => "required|numeric",
+            "tujuan_bahasa" => "required|numeric",
+            "kata_id" => "required|numeric",
+            "translate" => "required"
+        ]);
+        $kata = Kata::where('kata', $request->translate)->where('bahasa_id', $request->tujuan_bahasa)->get();
+        if($kata->count() > 0) {
+            $kata = $kata[0];
+        } else {
+            $kata = new Kata;
+            $kata->bahasa_id = $request->tujuan_bahasa;
+            $kata->kata = $request->translate;
+            $kata->contoh_kalimat = $request->contoh_kalimat;
+            $kata->save();
+        }
+
+        Translate::create([
+            "dari" => $request->kata_id,
+            "tujuan" => $kata->id,
+            "user_id" => Auth::user()->id
+        ]);
+
+        return redirect()->back();
+    }
 }

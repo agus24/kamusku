@@ -24,6 +24,7 @@
     <link href="{{ asset('css/fontawesome-all.min.css') }}" rel="stylesheet">
     <link href='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
     <link href='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/css/froala_style.min.css' rel='stylesheet' type='text/css' />
+    <link href='https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css' rel='stylesheet' type='text/css' />
     @yield("style")
 </head>
 <body>
@@ -77,6 +78,7 @@
             @yield('content')
         </main>
     </div>
+    @yield('modal')
     <script>
         let User = {};
         let Url = "{{ url('/') }}";
@@ -92,6 +94,7 @@
     <script src="{{ asset('js/flat-ui.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
     <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/js/froala_editor.min.js'></script>
+    <script type='text/javascript' src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>
 
     @yield('script')
 </body>

@@ -37,30 +37,198 @@
         background-color: white;
         padding: 5px 5px 5px 5px;
     }
+
+    .todo-search:before {
+        content:""
+    }
+
+    .todo-search {
+        font-weight:bold;
+    }
+
+    .todo li:after {
+        display:none
+    }
+    .tabs {
+      background: #34485d;
+      height: 51px;
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+      width: 100%;
+      position: relative;
+      display: block;
+      margin-bottom: 20px;
+    }
+    .tabs li {
+      display: block;
+      float: left;
+      margin: 0;
+      padding: 0;
+      width: 33%;
+    }
+    .tabs a {
+      background: #34485d;
+      display: block;
+      float: left;
+      text-decoration: none;
+      color: white;
+      text-align:center;
+      width: 100%;
+      font-size: 16px;
+      padding: 12px 22px 12px 22px;
+      /*border-right: 1px solid @tab-border;*/
+
+    }
+    .tabs li:last-child a {
+      border-right: none;
+      padding-left: 0;
+      padding-right: 0;
+      width: 100%;
+      text-align: center;
+    }
+    .tabs a.active {
+      background: #41bc9c;
+      border-right: none;
+      width: 100%;
+      -webkit-transition: all 0.5s linear;
+    	-moz-transition: all 0.5s linear;
+    	transition: all 0.5s linear;
+    }
 </style>
 @endsection
 @section('content')
-    <div class="row justify-content-center">
-        <div class="col-md-10 col-md-offset-1">
+    <div class="row">
+        <div class="col-md-9 col-md-pull-3 col-xs-8 col-xs-push-4">
             <div class="card">
-                <div class="card-body" id="translate-body">
+                <div class="card-body">
                     @if(!Auth::guest())
                         <div class="row">
                             <div class="col-md-12">
-                                <a href="{{ url('bahasa') }}" class="btn btn-primary btn-block">Buat Translate Baru</a>
+                                <button class="btn btn-primary btn-block" id="buttonCreate" onclick="openNewTranslate()">Buat Translate Baru</button>
+                                <form action="{{ url('terjemahan') }}" method="POST" style="display:none" id="formCreate">
+                                    {!! csrf_field() !!}
+                                    <div class="form-group">
+                                        <label>Bahasa awal</label>
+                                        <select class="form-control" name="dari_bahasa" id="dari_bahasa" required>
+                                            <option value="">Select</option>
+                                            @foreach($bahasa as $bhs)
+                                                <option value="{{$bhs->id}}">{{$bhs->nama}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Bahasa Tujuan</label>
+                                        <select class="form-control" name="tujuan_bahasa" required>
+                                            <option value="">Select</option>
+                                            @foreach($bahasa as $bhs)
+                                                <option value="{{$bhs->id}}">{{$bhs->nama}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group" id="kata_group">
+                                        <label>Kata</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="text_kata" value="" required>
+                                            <input type="hidden" name="kata_id" id="hdn_kata" value="" required>
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button" onclick="searchKata()">Search</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Arti</label>
+                                        <input type="text" class="form-control" name="translate" value="" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Contoh Kalimat</label>
+                                        <textarea class="form-control" name="contoh_kalimat"></textarea>
+                                    </div>
+                                    <input type="submit" class="btn btn-primary">
+                                    <input type="button" class="btn btn-default" value="Batal" id="buttonBatal">
+                                </form>
                             </div>
                         </div>
                         <hr>
                     @endif
+                    <ul class="tabs">
+                        <li><a href="#login" class="active" tipe="semua">Semua</a></li>
+                        <li><a href="#register" tipe="bahasa">Bahasa</a></li>
+                        <li><a href="#reset" tipe="user">User</a></li>
+                    </ul>
+                    <div id="translate-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-xs-4 col-xs-pull-8">
+            <div class="span4">
+                <div class="todo mrm">
+                    <div class="todo-search">
+                        User Terpopuler
+                    </div>
+                    <ul>
+                    @foreach($terpopuler as $pop)
+                        <li class="" onclick="window.location.href='{{ url('profile/'.$pop->user->id) }}'">
+                            <div class="todo-icon"></div>
+                            <div class="todo-content">
+                                <h4 class="todo-name">
+                                    {{ $pop->user->name }}
+                                </h4>
+                                <span style="color:green">{{ $pop->total_kontribusi }} Terjemahan</span>
+                            </div>
+                        </li>
+                    @endforeach
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 @endsection
+@section('modal')
+    @include('modal.home')
+@endsection
 
 @section('script')
 <script>
+    let tipe = "semua";
+    let oldTipe = "semua";
+    (function( $ ) {
+      // constants
+      var SHOW_CLASS = 'show',
+          HIDE_CLASS = 'hide',
+          ACTIVE_CLASS = 'active';
+
+      $( '.tabs' ).on( 'click', 'li a', function(e){
+        e.preventDefault();
+        var $tab = $( this ),
+             href = $tab.attr( 'href' );
+        tipe = $tab.attr('tipe');
+
+         $( '.active' ).removeClass( ACTIVE_CLASS );
+         $tab.addClass( ACTIVE_CLASS );
+
+         $( '.show' )
+            .removeClass( SHOW_CLASS )
+            .addClass( HIDE_CLASS )
+            .hide();
+
+          $(href)
+            .removeClass( HIDE_CLASS )
+            .addClass( SHOW_CLASS )
+            .hide()
+            .fadeIn( 550 );
+        console.log(tipe);
+        next_page_url = "{{ url('api/loadTranslate') }}?page=1";
+        loadTranslate();
+        console.log('called');
+      });
+    })( jQuery );
+</script>
+<script src="{{ asset('js/home.js') }}"></script>
+<script>
 let next_page_url = "{{ url('api/loadTranslate') }}?page=1";
+let oldUrl = "";
 let loading = false;
 
 function cekScroll() {
@@ -77,19 +245,30 @@ function cekScroll() {
 setInterval(cekScroll, 200);
 
 function loadTranslate() {
+    console.log(next_page_url);
+    if(oldTipe != tipe) {oldUrl = '';}
+    if(oldUrl != next_page_url) {
+        $.ajax({
+            async : true,
+            url : next_page_url,
+            type : "get",
+            data : {
+                user: User.id ? User.id : 0,
+                tipe: tipe
+            }
+        }).done((result) => {
+            console.log(result.next_page_url);
+            oldUrl = next_page_url;
+            next_page_url = result.next_page_url == null ? "no" : result.next_page_url;
+            console.log(oldUrl);
+            if(oldTipe != tipe) {
+                $('#translate-body').empty();
+                oldTipe = tipe;
+            }
+            putToHtml(result.data);
+        });
+    }
     loading = true;
-    $.ajax({
-        async : true,
-        url : next_page_url,
-        type : "get",
-        data : {
-            user: User.id ? User.id : 0
-        }
-    }).done((result) => {
-        next_page_url = result.next_page_url
-        console.log(result)
-        putToHtml(result.data);
-    });
 }
 
 function putToHtml(data) {
@@ -101,7 +280,7 @@ function putToHtml(data) {
         }
         html += `
             <div class="row">
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <a href="{{ url('profile/') }}/`+value.user.id+`">
                         <center>
                             <img src="{{ asset('storage/') }}/`+value.user.avatar+`" width="50%"><br>
@@ -109,7 +288,7 @@ function putToHtml(data) {
                         </center>
                     </a>
                 </div>
-                <div class="col-md-11">
+                <div class="col-md-10">
                     <div class="row">
                         <div class="col-md-12">
                             <a href="{{ url('terjemahan') }}/`+value.id+`"><b>`+ value.dari_kata.kata +` - `+ value.tujuan_kata.kata +`</b></a><Br>

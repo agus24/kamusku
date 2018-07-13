@@ -27,3 +27,4 @@ Route::get('loadTranslate', 'HomeController@load');
 Route::post('like', "TranslateController@like");
 Route::post('loadComment', "TranslateController@loadComment");
 Route::post('postComment', "TranslateController@postComment");
+Route::post('getKata', "TranslateController@getKata");

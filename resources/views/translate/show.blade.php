@@ -7,6 +7,24 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
+                        <div class="col-md-12">
+                            @if(!Auth::guest())
+                                @php $hasFollow = Auth::user()->hasFollowBahasa($translate->dariKata->bahasa->id); $tipeFollow = $hasFollow ? "unfollow" : "follow"; @endphp
+                                <button class="btn btn-{{$hasFollow ? "danger" : "success"}}"
+                                    {{ Auth::guest() ? "disabled" : "" }}
+                                    onclick="window.location.href='{{url("bahasa/".$tipeFollow."/".$translate->dariKata->bahasa->id)}}'"
+                                >
+                                {{ $hasFollow ? "Berhenti meng" : "" }}ikuti Bahasa {{ $translate->dariKata->bahasa->nama }}</button>
+                                @php $hasFollow = Auth::user()->hasFollowBahasa($translate->tujuanKata->bahasa->id); $tipeFollow = $hasFollow ? "unfollow" : "follow"; @endphp
+                                <button class="btn btn-{{$hasFollow ? "danger" : "success"}}"
+                                    {{ Auth::guest() ? "disabled" : "" }}
+                                    onclick="window.location.href='{{url("bahasa/".$tipeFollow."/".$translate->tujuanKata->bahasa->id)}}'"
+                                >
+                                {{ $hasFollow ? "Berhenti meng" : "" }}ikuti Bahasa {{ $translate->tujuanKata->bahasa->nama }}</button>
+                            @endif
+                            <br>
+                            <br>
+                        </div>
                         <div class="col-md-2">
                             <img src="{{ asset('storage/'.$translate->user->avatar) }}" width="50%"><br>
                             <span style="font-size:15px">
@@ -17,6 +35,7 @@
                                 onclick="window.location.href='{{url('terjemahan/'.$id.'/like')}}'"
                             >
                             {{ $translate->rated->count() }} Like</button>
+                            </span>
                         </div>
                         <div class="col-md-10">
                             <b>Terjemahan dari {{ $translate->dariKata->bahasa->nama }} Ke {{ $translate->tujuanKata->bahasa->nama }}</b>
