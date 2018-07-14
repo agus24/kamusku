@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Bahasa;
 use App\BahasaFollow;
+use App\Notifications\CommentNotification;
 use App\Notifications\LikeTranslate;
 use App\Report;
 use App\Translate;
@@ -100,11 +101,14 @@ class HomeController extends Controller
 
     public function store(Request $request, $id)
     {
+        $translate = Translate::find($id);
         $comment = new TranslateComment;
         $comment->comment = $request->comment;
         $comment->user_id = Auth::user()->id;
         $comment->translate_id = $id;
         $comment->save();
+
+        User::find($translate->user_id)->notify(new CommentNotification($request->translate_id, Auth::user()));
 
         return redirect("terjemahan/".$id);
     }

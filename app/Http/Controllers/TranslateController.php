@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Bahasa;
 use App\Katum as Kata;
+use App\Notifications\CommentNotification;
 use App\Notifications\LikeTranslate;
 use App\Translate;
 use App\TranslateComment;
@@ -156,11 +157,14 @@ class TranslateController extends Controller
 
     public function postComment(Request $request)
     {
+        $translate = Translate::find($request->translate_id);
         $translateComment = new TranslateComment;
         $translateComment->user_id = $request->user_id;
         $translateComment->translate_id = $request->translate_id;
         $translateComment->comment = $request->comment;
         $translateComment->save();
+
+        User::find($translate->user_id)->notify(new CommentNotification($request->translate_id, User::find($request->user_id)));
 
         return "sukses";
     }
