@@ -28,6 +28,7 @@ Route::get('terjemahan/{id}/like', "HomeController@like");
 Route::post('terjemahan/', "TranslateController@insertDB");
 
 Route::get('/kirimUlang', function() {
+    ini_set('max_execution_time', -1);
     if(Auth::guest()) {
         abort(404);
     }
