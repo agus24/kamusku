@@ -143,7 +143,7 @@ class TranslateController extends Controller
             $user->unlikeTranslate($translate_id);
         } else {
             $user->likeTranslate($translate_id);
-            User::find($translate->user_id)->notify(new LikeTranslate($translate_id));
+            User::find($translate->user_id)->notify(new LikeTranslate($translate_id, $user));
         }
         return response()->json(Translate::with(["rated", "user"])->find($translate_id));
     }

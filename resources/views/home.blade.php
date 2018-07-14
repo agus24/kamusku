@@ -174,7 +174,7 @@
                         </ul>
                     @else
                         <center>
-                            <h4 style="color:red">Anda Belum aktivasi akun</h4>
+                            <h4 style="color:red">Anda Belum <a href="{{ url('kirimUlang') }}" style="color:red"><u>aktivasi</u></a> akun</h4>
                             <i style="color:red;font-size:14px">Harap Cek Email anda untuk aktivasi</i>
                         </center>
                     @endif

@@ -33,6 +33,7 @@ Route::get('/kirimUlang', function() {
     }
     $user = Auth::user();
     \Mail::to($user->email)->send(new App\Mail\UserRegistered($user));
+    return redirect()->back();
 });
 
 Route::get('aktivasi/{id}', function($id){

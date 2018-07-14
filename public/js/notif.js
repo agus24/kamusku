@@ -1,4 +1,5 @@
-function loadNotif(user_id) {
+function loadNotif() {
+    let user_id = User.id;
     $.ajax({
         async :true,
         url: Url + "/api/getNotif",
@@ -8,6 +9,10 @@ function loadNotif(user_id) {
         type: "GET"
     }).done((result) => {
         let html = '';
+        console.log(result)
+        if(result.length > 0) {
+            $('#navbarDropdown').addClass('has-notif');
+        }
         $.each(result, (key,value) => {
             html += `<li style="padding: 10px">
                 <a href="`+Url+`/`+value.data.tipe+`/`+value.data.id+`?notif_id=`+value.id+`">
@@ -26,5 +31,5 @@ function loadNotif(user_id) {
 
 if(User.id != undefined) {
     loadNotif(User.id);
-    setInterval("loadNotif", 5000);
+    setInterval(loadNotif, 5000);
 }

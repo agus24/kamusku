@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Bahasa;
 use App\BahasaFollow;
+use App\Notifications\LikeTranslate;
 use App\Report;
 use App\Translate;
 use App\TranslateComment;
@@ -84,7 +85,7 @@ class HomeController extends Controller
 
     public function show($id)
     {
-        if($_GET['notif_id']) {
+        if(isset($_GET['notif_id'])) {
             DB::table('notifications')->where('id', $_GET['notif_id'])->update(['read_at' => Carbon::now()]);
         }
         if(!Auth::guest()) {
@@ -112,10 +113,14 @@ class HomeController extends Controller
     {
         $translate_id = $id;
         $user = Auth::user();
+        $translate = Translate::find($translate_id);
         if($user->hasLike($translate_id)) {
             $user->unlikeTranslate($translate_id);
         } else {
             $user->likeTranslate($translate_id);
+            if($translate->user_id != $user->id) {
+                User::find($translate->user_id)->notify(new LikeTranslate($translate_id, User::find($translate->user_id)));
+            }
         }
         return redirect('terjemahan/'.$id);
     }
