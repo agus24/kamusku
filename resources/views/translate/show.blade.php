@@ -53,12 +53,15 @@
                     </div>
                     <div class="comment-section" style="margin-left:10%">
                         <hr>
-                        <div class="col-md-12">
-                            <form action="{{ url('comment/'.$id) }}" method="POST">
-                                {!! csrf_field() !!}
-                                <input id='comment-box' class='form-control' name="comment" placeholder='Tulis Komentar Anda' type="text" required>
-                            </form>
-                        </div>
+                        <h5>Komentar</h5>
+                        @if(!Auth::guest())
+                            <div class="col-md-12">
+                                <form action="{{ url('comment/'.$id) }}" method="POST">
+                                    {!! csrf_field() !!}
+                                    <input id='comment-box' class='form-control' name="comment" placeholder='Tulis Komentar Anda' type="text" required>
+                                </form>
+                            </div>
+                        @endif
                         <hr>
                         @foreach($translate->comments()->orderBy('created_at','desc')->get() as $comment)
                             <div class="row">

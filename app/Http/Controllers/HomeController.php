@@ -32,9 +32,19 @@ class HomeController extends Controller
         $terpopuler = Translate::groupBy('user_id')
             ->select('translate.*', DB::raw('count(*) as total_kontribusi'))
             ->orderBy(DB::raw('count(*)'), 'desc')
+            ->limit(4)
+            ->get();
+        $terjemahan = Translate::orderBy(DB::raw('rate'), 'desc')
+            ->limit(4)
+            ->get();
+        $terhangat = Translate::join('translate_comments','translate.id', 'translate_comments.translate_id')
+            ->groupBy('translate_comments.translate_id')
+            ->select('translate.*', DB::raw('count(*) as total_komentar'))
+            ->orderBy(DB::raw('rate'), 'desc')
+            ->limit(4)
             ->get();
         $bahasa = Bahasa::all();
-        return view('home', compact('terpopuler','bahasa'));
+        return view('home', compact('terpopuler','bahasa', 'terjemahan', 'terhangat'));
     }
 
     public function load()
@@ -49,14 +59,14 @@ class HomeController extends Controller
             ->leftjoin("kata as dariKata", "dariKata.id", 'translate.dari')
             ->leftjoin('kata as tujuanKata', 'tujuanKata.id', 'translate.tujuan');
 
-        if($user && count($followedBahasa) != 0 && $tipe == "bahasa") {
+        if($user && $tipe == "bahasa") {
             $translate = $translate->WhereIn('dariKata.bahasa_id', $followedBahasa)
                 ->orWhereIn('tujuanKata.bahasa_id', $followedBahasa);
         }
 
         $translate = $translate->select('translate.*')
             ->orderBy('created_at','desc');
-            
+
         return response()->json($translate->paginate(5));
     }
 

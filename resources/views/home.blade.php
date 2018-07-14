@@ -107,6 +107,12 @@
                             <div class="col-md-12">
                                 <button class="btn btn-primary btn-block" id="buttonCreate" onclick="openNewTranslate()">Buat Translate Baru</button>
                                 <form action="{{ url('terjemahan') }}" method="POST" style="display:none" id="formCreate">
+                                    <h5>Tambah Terjemahan Baru</h5>
+                                    <ul style="font-size:12px">
+                                        <li><i>Untuk menambahkan kata pada bahasa tertentu diharapkan untuk melakukan terjemahan dari bahasa indonesia ke bahasa yang anda ingin tambahkan kata baru.</i></li>
+                                        <li><i>Untuk mencari kata anda dapat memilih bahasa awal terlebih dahulu lalu memasukkan kata yang ingin anda cari pada kolom kata lalu tekan tombol search</i></li>
+                                        <li><i>Diharapkan untuk tidak menambahkan terjemahan yang bersifat SARA pada terjemahan maupun pada contoh kalimat</i></li>
+                                    </ul>
                                     {!! csrf_field() !!}
                                     <div class="form-group">
                                         <label>Bahasa awal</label>
@@ -150,35 +156,88 @@
                             </div>
                         </div>
                         <hr>
+                        <div style="display:none" id="bantuan">
+                            <h5>Tabs</h5>
+                            <span style="font-size:14px">Dibawah ini merupakan tabs untuk melakukan filter pada home.</span>
+                            <ul style="font-size:12px">
+                                <li><i>Kolom Semua : untuk menampilkan seluruh hasil terjemahan</i></li>
+                                <li><i>Kolom Bahasa : untuk menampilkan hasil terjemahan berdasarkan bahasa yang anda ikuti</i></li>
+                                <li><i>Kolom User : untuk menampilkan hasil terjemahan berdasarkan user yang anda ikuti</i></li>
+                            </ul>
+                        </div>
+                        <button class="btn btn-warning" id="tombolBantuan" state='hidden'>Tampilkan Bantuan</button>
+                        <ul class="tabs" style="margin-top:10px">
+                            <li><a href="#login" class="active" tipe="semua">Semua</a></li>
+                            <li><a href="#register" tipe="bahasa">Bahasa</a></li>
+                            <li><a href="#reset" tipe="user">User</a></li>
+                        </ul>
                     @endif
-                    <ul class="tabs">
-                        <li><a href="#login" class="active" tipe="semua">Semua</a></li>
-                        <li><a href="#register" tipe="bahasa">Bahasa</a></li>
-                        <li><a href="#reset" tipe="user">User</a></li>
-                    </ul>
                     <div id="translate-body">
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3 col-xs-4 col-xs-pull-8">
+            {{-- terjemahan terhangat --}}
+            <div class="span4">
+                <div class="todo mrm">
+                    <div class="todo-search">
+                        Terjemahan Terhangat
+                    </div>
+                    <ul>
+                        @foreach($terhangat as $terjemahan_terhangat)
+                            <li class="" onclick="window.location.href='{{ url('terjemahan/'.$terjemahan_terhangat->id) }}'">
+                                <div class="todo-icon"></div>
+                                <div class="todo-content">
+                                    <h4 class="todo-name">
+                                        {{ $terjemahan_terhangat->dariKata->kata }} - {{ $terjemahan_terhangat->tujuanKata->kata }}
+                                    </h4>
+                                    <span style="color:white">{{ $terjemahan_terhangat->total_komentar }} Komentar</span>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+            {{-- terjemahan terpopuler --}}
+            <div class="span4">
+                <div class="todo mrm">
+                    <div class="todo-search">
+                        Terjemahan Terpopuler
+                    </div>
+                    <ul>
+                    @foreach($terjemahan as $terjemahan_populer)
+                        <li class="" onclick="window.location.href='{{ url('terjemahan/'.$terjemahan_populer->id) }}'">
+                            <div class="todo-icon"></div>
+                            <div class="todo-content">
+                                <h4 class="todo-name">
+                                    {{ $terjemahan_populer->dariKata->kata }} - {{ $terjemahan_populer->tujuanKata->kata }}
+                                </h4>
+                                <span style="color:red">{{ $terjemahan_populer->rate }} Like</span>
+                            </div>
+                        </li>
+                    @endforeach
+                    </ul>
+                </div>
+            </div>
+            {{-- user-terpopuler --}}
             <div class="span4">
                 <div class="todo mrm">
                     <div class="todo-search">
                         User Terpopuler
                     </div>
                     <ul>
-                    @foreach($terpopuler as $pop)
-                        <li class="" onclick="window.location.href='{{ url('profile/'.$pop->user->id) }}'">
-                            <div class="todo-icon"></div>
-                            <div class="todo-content">
-                                <h4 class="todo-name">
-                                    {{ $pop->user->name }}
-                                </h4>
-                                <span style="color:green">{{ $pop->total_kontribusi }} Terjemahan</span>
-                            </div>
-                        </li>
-                    @endforeach
+                        @foreach($terpopuler as $pop)
+                            <li class="" onclick="window.location.href='{{ url('profile/'.$pop->user->id) }}'">
+                                <div class="todo-icon"></div>
+                                <div class="todo-content">
+                                    <h4 class="todo-name">
+                                        {{ $pop->user->name }}
+                                    </h4>
+                                    <span style="color:green">{{ $pop->total_kontribusi }} Terjemahan</span>
+                                </div>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -191,6 +250,18 @@
 
 @section('script')
 <script>
+$('#tombolBantuan').click(() => {
+    let state = $('#tombolBantuan').attr('state');
+    if(state == 'hidden') {
+        $('#tombolBantuan').text("Sembunyikan Bantuan");
+        $('#bantuan').fadeIn();
+        $('#tombolBantuan').attr('state', 'shown')
+    } else {
+        $('#tombolBantuan').text("Tampilkan Bantuan");
+        $('#bantuan').fadeOut();
+        $('#tombolBantuan').attr('state', 'hidden')
+    }
+});
     let tipe = "semua";
     let oldTipe = "semua";
     (function( $ ) {
@@ -439,5 +510,6 @@ function generateComment(el, data, id)
     el.append(html);
     plantKey("#comment-box_"+uniq, id);
 }
+loadTranslate()
 </script>
 @endsection

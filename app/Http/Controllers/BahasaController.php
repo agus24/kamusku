@@ -15,7 +15,12 @@ class BahasaController extends Controller
      */
     public function index()
     {
-        $bahasa = Bahasa::all();
+        $bahasa = new Bahasa;
+        if(isset($_GET['search'])) {
+            $bahasa = $bahasa->where('nama', 'LIKE', "%{$_GET['search']}%")
+                ->orWhere('daerah', 'LIKE', "%{$_GET['search']}%");
+        }
+        $bahasa = $bahasa->get();
         return view('bahasa.index', compact('bahasa'));
     }
 
