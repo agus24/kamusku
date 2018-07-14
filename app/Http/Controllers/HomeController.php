@@ -8,6 +8,7 @@ use App\Report;
 use App\Translate;
 use App\TranslateComment;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -83,6 +84,9 @@ class HomeController extends Controller
 
     public function show($id)
     {
+        if($_GET['notif_id']) {
+            DB::table('notifications')->where('id', $_GET['notif_id'])->update(['read_at' => Carbon::now()]);
+        }
         if(!Auth::guest()) {
             $hasLike = Auth::user()->hasLike($id);
         } else {

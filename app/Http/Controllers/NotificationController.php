@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Translate;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class TranslateController extends Controller
+class NotificationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,23 +15,12 @@ class TranslateController extends Controller
      */
     public function index()
     {
-        $translates = (new Translate);
-        if(isset($_GET['search']))
-        {
-            $search = $_GET['search'];
-            $translates = $translates->join('kata as dariKata', 'dariKata.id', 'translate.dari')
-                ->join('kata as tujuanKata', 'tujuanKata.id', 'translate.tujuan')
-                ->join('bahasas as dariBahasa', 'dariBahasa.id', 'dariKata.bahasa_id')
-                ->join('bahasas as tujuanBahasa', 'tujuanBahasa.id', 'tujuanKata.bahasa_id')
-                ->select('translate.*')
-                ->orWhere('dariKata.kata', 'like', "%$search%")
-                ->orWhere('tujuanKata.kata', 'like', "%$search%")
-                ->orWhere('dariBahasa.nama', 'like', "%$search%")
-                ->orWhere('tujuanBahasa.nama', 'like', "%$search%");
-        }
-
-        $translates = $translates->paginate(25);
-        return view('vendor.voyager.translate.index', compact('translates'));
+        $notif = User::find($_GET['user_id'])->unreadNotifications;
+        $notif->map(function($value) {
+            $value->diff = Carbon::parse($value->created_at)->diffForHumans();
+            return $value;
+        });
+        return $notif;
     }
 
     /**
@@ -63,9 +52,7 @@ class TranslateController extends Controller
      */
     public function show($id)
     {
-        $translate = Translate::find($id);
-        $translate->delete();
-        return redirect()->back();
+        //
     }
 
     /**

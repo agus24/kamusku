@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Bahasa;
 use App\Katum as Kata;
+use App\Notifications\LikeTranslate;
 use App\Translate;
 use App\TranslateComment;
 use App\User;
@@ -136,11 +137,13 @@ class TranslateController extends Controller
     public function like(Request $request)
     {
         $translate_id = $request->translate_id;
+        $translate = Translate::find($translate_id);
         $user = User::find($request->user_id);
         if($user->hasLike($translate_id)) {
             $user->unlikeTranslate($translate_id);
         } else {
             $user->likeTranslate($translate_id);
+            User::find($translate->user_id)->notify(new LikeTranslate($translate_id));
         }
         return response()->json(Translate::with(["rated", "user"])->find($translate_id));
     }

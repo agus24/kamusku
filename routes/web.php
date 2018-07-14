@@ -49,3 +49,7 @@ Route::get('follow/{id}', "ProfileController@follow");
 Route::get('unfollow/{id}', "ProfileController@unfollow");
 Route::get('report/{id}', "HomeController@reportForm");
 Route::post('report/{id}', "HomeController@report");
+
+Route::get('test', function() {
+    Auth::user()->notify(new \App\Notifications\LikeTranslate(1, App\User::find(2)));
+});

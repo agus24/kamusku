@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Translate;
+use App\Report;
 use Illuminate\Http\Request;
 
-class TranslateController extends Controller
+class LaporanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,23 +15,23 @@ class TranslateController extends Controller
      */
     public function index()
     {
-        $translates = (new Translate);
-        if(isset($_GET['search']))
-        {
-            $search = $_GET['search'];
-            $translates = $translates->join('kata as dariKata', 'dariKata.id', 'translate.dari')
-                ->join('kata as tujuanKata', 'tujuanKata.id', 'translate.tujuan')
-                ->join('bahasas as dariBahasa', 'dariBahasa.id', 'dariKata.bahasa_id')
-                ->join('bahasas as tujuanBahasa', 'tujuanBahasa.id', 'tujuanKata.bahasa_id')
-                ->select('translate.*')
-                ->orWhere('dariKata.kata', 'like', "%$search%")
-                ->orWhere('tujuanKata.kata', 'like', "%$search%")
-                ->orWhere('dariBahasa.nama', 'like', "%$search%")
-                ->orWhere('tujuanBahasa.nama', 'like', "%$search%");
-        }
+        $laporan = Report::orderBy('reports.created_at', 'desc');
+        if(isset($_GET['search'])) {
+            $laporan = $laporan->leftJoin('translate', 'translate.id', 'reports.translate_id')
+                ->leftJoin('kata as dariKata', 'dariKata.id', 'translate.dari')
+                ->leftJoin('kata as tujuanKata', 'tujuanKata.id', 'translate.tujuan')
+                ->leftJoin('bahasas as bahasaDari', 'bahasaDari.id', 'dariKata.bahasa_id')
+                ->leftJoin('bahasas as bahasaTujuan', 'bahasaTujuan.id', 'tujuanKata.bahasa_id')
+                ->leftJoin('users', 'users.id','reports.user_id');
 
-        $translates = $translates->paginate(25);
-        return view('vendor.voyager.translate.index', compact('translates'));
+            $laporan = $laporan->orWhere('dariKata.kata', 'like', "%{$_GET['search']}%")
+                ->orWhere('tujuanKata.kata', 'like', "%{$_GET['search']}%")
+                ->orWhere('bahasaDari.nama', 'like', "%{$_GET['search']}%")
+                ->orWhere('bahasaTujuan.nama', 'like', "%{$_GET['search']}%")
+                ->orWhere('users.name', 'like', "%{$_GET['search']}%");
+        }
+        $laporan = $laporan->select('reports.*')->paginate(15);
+        return view('vendor.voyager.laporan.index', compact('laporan'));
     }
 
     /**
@@ -63,9 +63,7 @@ class TranslateController extends Controller
      */
     public function show($id)
     {
-        $translate = Translate::find($id);
-        $translate->delete();
-        return redirect()->back();
+        //
     }
 
     /**
