@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\BahasaFollow;
-use App\Translate;
 use App\Bahasa;
+use App\BahasaFollow;
+use App\Report;
+use App\Translate;
 use App\TranslateComment;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -52,21 +54,30 @@ class HomeController extends Controller
         $user = $_GET['user'];
         $tipe = $_GET['tipe'];
         $followedBahasa = [];
+        $userList = [];
         if($user && $tipe == "bahasa") {
             $followedBahasa = BahasaFollow::where('user_id', $user)->select('*')->get()->map(function($value){ return $value->bahasa_id; });
         }
+
+        if($user && $tipe == "user") {
+            $userList = DB::table('user_follow')->where('user_id', $user)->get()->map(function($value) { return $value->following; });
+        }
+
         $translate = (new Translate)->getWith()
             ->leftjoin("kata as dariKata", "dariKata.id", 'translate.dari')
             ->leftjoin('kata as tujuanKata', 'tujuanKata.id', 'translate.tujuan');
 
         if($user && $tipe == "bahasa") {
-            $translate = $translate->WhereIn('dariKata.bahasa_id', $followedBahasa)
+            $translate = $translate->orWhereIn('dariKata.bahasa_id', $followedBahasa)
                 ->orWhereIn('tujuanKata.bahasa_id', $followedBahasa);
+        }
+
+        if($user && $tipe == "user") {
+            $translate = $translate->orWhereIn('translate.user_id', $userList);
         }
 
         $translate = $translate->select('translate.*')
             ->orderBy('created_at','desc');
-
         return response()->json($translate->paginate(5));
     }
 
@@ -103,5 +114,25 @@ class HomeController extends Controller
             $user->likeTranslate($translate_id);
         }
         return redirect('terjemahan/'.$id);
+    }
+
+    public function reportForm($id)
+    {
+        $translate = Translate::find($id);
+        return view('report.create', compact('translate'));
+    }
+
+    public function report(Request $request, $id)
+    {
+        $this->validate($request, [
+            "laporan" => "required"
+        ]);
+
+        $report = new Report;
+        $report->translate_id = $id;
+        $report->user_id = Auth::user()->id;
+        $report->laporan = $request->laporan;
+        $report->save();
+        return redirect('/');
     }
 }

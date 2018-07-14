@@ -103,6 +103,7 @@
             <div class="card">
                 <div class="card-body">
                     @if(!Auth::guest())
+                    @if(Auth::user()->status == 1)
                         <div class="row">
                             <div class="col-md-12">
                                 <button class="btn btn-primary btn-block" id="buttonCreate" onclick="openNewTranslate()">Buat Translate Baru</button>
@@ -171,6 +172,12 @@
                             <li><a href="#register" tipe="bahasa">Bahasa</a></li>
                             <li><a href="#reset" tipe="user">User</a></li>
                         </ul>
+                    @else
+                        <center>
+                            <h4 style="color:red">Anda Belum aktivasi akun</h4>
+                            <i style="color:red;font-size:14px">Harap Cek Email anda untuk aktivasi</i>
+                        </center>
+                    @endif
                     @endif
                     <div id="translate-body">
                     </div>
@@ -366,13 +373,20 @@ function putToHtml(data) {
                             Translate dari <i>`+ value.dari_kata.bahasa.nama +`</i> ke <i>`+ value.tujuan_kata.bahasa.nama +`</i><br>
                         </div>
                         @if(!Auth::guest())
+                        @if(Auth::user()->status == 1)
                             <div class="col-md-2 like-icon" onclick='toggleLike(this,`+value.id+`)'>
                                 <span class="`+liked+`"><i class="fas fa-heart"><span>`+value.rate+`</span></i> Suka</span>
                             </div>
                         @endif
+                        @endif
                         <div class="col-md-2 comment-icon" onclick='toggleComment(this, `+value.id+`)'>
                             <span class="off"><i class="fas fa-comments"></i> Komentar</span>
                         </div>
+                        @if(!Auth::guest())
+                        <div class="col-md-2 comment-icon" onclick='window.location.href = "{{ url('report/') }}/`+value.id+`"'>
+                            <span class="off" style="color:red"><i class="fas fa-exclamation-triangle"></i> Laporkan</span>
+                        </div>
+                        @endif
                         <div class="col-md-12">
                             <span id="comment-section`+value.id+`"></span>
                         </div>
@@ -448,7 +462,9 @@ function showNoComment(el, id)
 {
     let uniq = Math.floor(Math.random()*100000);
     @if(!Auth::guest())
+    @if(Auth::user()->status == 1)
         el.append("<textarea id='comment-box_"+uniq+"' class='form-control' placeholder='Tulis Komentar Anda'></textarea><br>");
+    @endif
     @endif
     el.append("<p>No Comment</p>");
     plantKey("#comment-box_"+uniq, id);
@@ -492,7 +508,9 @@ function generateComment(el, data, id)
     console.log(data);
     let html = '';
     @if(!Auth::guest())
+    @if(Auth::user()->status == 1)
     el.append("<textarea id='comment-box_"+uniq+"' class='form-control' placeholder='Tulis Komentar Anda'></textarea><br>");
+    @endif
     @endif
     let i = 1;
     let tipe = 'ganjil';

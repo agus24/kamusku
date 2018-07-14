@@ -18,6 +18,15 @@
                 @if(!Auth::guest())
                     @if(Auth::user()->id == $user->id)
                         | <a href="{{ url('profile/'.$user->id.'/edit') }}" class="btn btn-primary btn-sm">Edit</a>
+                        @if(Auth::user()->status == 0)
+                            | <a href="{{ url('kirimUlang') }}" class="btn btn-warning btn-sm">Kirim Aktivasi ulang</a>
+                        @endif
+                    @elseif(Auth::user()->id != $user->id && Auth::user()->status == 1)
+                        @php
+                            $statusFollow = 1;
+                            $statusFollow = App\User::find(Auth::user()->id)->hasFollowUser($user->id);
+                        @endphp
+                        | <a href="{{ url(($statusFollow ? "unfollow" : "follow")."/".$user->id) }}" class="btn btn-{{ $statusFollow ? "danger" : "success" }} btn-sm">{{ $statusFollow ? "Unfollow" : "Follow" }}</a>
                     @endif
                 @endif
             </h5>

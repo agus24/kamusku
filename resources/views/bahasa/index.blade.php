@@ -37,6 +37,7 @@
                             <td>
                                 <a href="{{ url('kata/'.$value->id) }}" class="btn btn-embossed btn-inverse">Daftar Kata</a>
                                 @if(!Auth::guest())
+                                @if(Auth::user()->status == 1)
                                     @if(!Auth::user()->hasFollowBahasa($value->id))
                                         <a href="{{ url('bahasa/follow/'.$value->id) }}"
                                         class="btn btn-embossed btn-success">Ikuti</a>
@@ -44,6 +45,7 @@
                                         <a href="{{ url('bahasa/unfollow/'.$value->id) }}"
                                         class="btn btn-embossed btn-default">Ikuti</a>
                                     @endif
+                                @endif
                                 @endif
                             </td>
                         </tr>

@@ -9,6 +9,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             @if(!Auth::guest())
+                            @if(Auth::user()->status == 1)
                                 @php $hasFollow = Auth::user()->hasFollowBahasa($translate->dariKata->bahasa->id); $tipeFollow = $hasFollow ? "unfollow" : "follow"; @endphp
                                 <button class="btn btn-{{$hasFollow ? "danger" : "success"}}"
                                     {{ Auth::guest() ? "disabled" : "" }}
@@ -21,6 +22,7 @@
                                     onclick="window.location.href='{{url("bahasa/".$tipeFollow."/".$translate->tujuanKata->bahasa->id)}}'"
                                 >
                                 {{ $hasFollow ? "Berhenti meng" : "" }}ikuti Bahasa {{ $translate->tujuanKata->bahasa->nama }}</button>
+                            @endif
                             @endif
                             <br>
                             <br>
@@ -55,12 +57,14 @@
                         <hr>
                         <h5>Komentar</h5>
                         @if(!Auth::guest())
+                        @if(Auth::user()->status == 1)
                             <div class="col-md-12">
                                 <form action="{{ url('comment/'.$id) }}" method="POST">
                                     {!! csrf_field() !!}
                                     <input id='comment-box' class='form-control' name="comment" placeholder='Tulis Komentar Anda' type="text" required>
                                 </form>
                             </div>
+                        @endif
                         @endif
                         <hr>
                         @foreach($translate->comments()->orderBy('created_at','desc')->get() as $comment)

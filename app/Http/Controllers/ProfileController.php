@@ -74,4 +74,24 @@ class ProfileController extends Controller
     {
         //
     }
+
+    public function follow($id)
+    {
+        if(Auth::guest()) {
+            abort(404);
+        }
+
+        User::find(Auth::user()->id)->followUser($id);
+        return redirect()->back();
+    }
+
+    public function unfollow($id)
+    {
+        if(Auth::guest()) {
+            abort(404);
+        }
+
+        User::find(Auth::user()->id)->unfollowUser($id);
+        return redirect()->back();
+    }
 }
