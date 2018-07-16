@@ -9,7 +9,6 @@ function loadNotif() {
         type: "GET"
     }).done((result) => {
         let html = '';
-        console.log(result)
         if(result.length > 0) {
             $('#navbarDropdown').addClass('has-notif');
         }
@@ -24,7 +23,6 @@ function loadNotif() {
         $('#notifDropdown').empty()
         $('#notifDropdown').append(html)
     }).fail(error => {
-        alert("error load notifications");
         console.log(error);
     });
 }
