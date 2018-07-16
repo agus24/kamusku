@@ -24,6 +24,12 @@
     <link href="{{ asset('css/fontawesome-all.min.css') }}" rel="stylesheet">
     <link href='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
     <link href='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/css/froala_style.min.css' rel='stylesheet' type='text/css' />
+    <link href='https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css' rel='stylesheet' type='text/css' />
+    <style>
+        .has-notif {
+            color:red !important;
+        }
+    </style>
     @yield("style")
 </head>
 <body>
@@ -52,10 +58,19 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <i class="fas fa-bell"></i>
+                                </a>
+
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown" role="menu" id="notifDropdown" style="width: 500px;margin-left: -350px;">
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown" role="menu">
+                                    <li><a href="{{ url('profile/'.Auth::user()->id) }}">Profile</a></li>
                                     <li>
                                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             {{ __('Logout') }}
@@ -76,6 +91,7 @@
             @yield('content')
         </main>
     </div>
+    @yield('modal')
     <script>
         let User = {};
         let Url = "{{ url('/') }}";
@@ -91,7 +107,8 @@
     <script src="{{ asset('js/flat-ui.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
     <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/js/froala_editor.min.js'></script>
-
+    <script type='text/javascript' src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>
+    <script src="{{ asset('js/notif.js') }}"></script>
     @yield('script')
 </body>
 </html>

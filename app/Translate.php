@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Katum as Kata;
 use App\User;
+use App\TranslateComment;
 
 class Translate extends Model
 {
@@ -29,5 +30,25 @@ class Translate extends Model
     public function rated()
     {
         return $this->hasMany(Rate::class, 'translate_id', 'id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(TranslateComment::class, 'translate_id', 'id');
+    }
+
+    public function getWith()
+    {
+        return $this->with(['user',
+                'dariKata' => function ($child) {
+                        return $child->with(["bahasa"]);
+                    },
+                'tujuanKata' => function ($child) {
+                        return $child->with(["bahasa"]);
+                    },
+                'rated' => function($child) {
+                    return $child->with(["user"]);
+                }
+            ]);
     }
 }

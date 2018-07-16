@@ -57,6 +57,10 @@
 
 @section('script')
 <Script>
-    $('#myEditor').froalaEditor({toolbarInline: false})
+    let url = window.location.href
+    $('#myEditor').froalaEditor({toolbarInline: false});
+    if(url.split('/')[2] != "localhost") {
+        $('.fr-wrapper').find('div')[0].remove();
+    }
 </script>
 @endsection

@@ -4,7 +4,7 @@
     <div class="row justify-content-center">
         <div class="col-md-10 col-md-offset-1">
             <div class="card">
-                <div class="card-header">Daftar Kata Bahasa {{ $kata[0]->bahasa->nama }}</div>
+                <div class="card-header">Daftar Kata Bahasa {{ $bahasa->nama }}</div>
                 <div class="card-body">
                     <div class="col-md-2 float-right">
                         <form action="" method="GET">
@@ -21,7 +21,11 @@
                             <tr>
                                 <td>{{ $value->kata }}</td>
                                 <td>{{ $value->jumlahTranslate() }}</td>
+                                @if(!Auth::guest())
+                                @if(Auth::user()->status == 1)
                                 <td><a href="{{ url('translate/create/'.$value->id) }}" class="btn btn-primary">Buat Terjemahan Baru</a></td>
+                                @endif
+                                @endif
                             </tr>
                         @endforeach
                     </table>

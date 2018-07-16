@@ -2,9 +2,10 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\User;
 use DB;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends \TCG\Voyager\Models\User
 {
@@ -28,6 +29,56 @@ class User extends \TCG\Voyager\Models\User
         'password', 'remember_token',
     ];
 
+    public function getFollowers()
+    {
+        return $this->belongsToMany(User::class, 'user_follow', 'user_id', 'following');
+    }
+
+    public function getFollowing()
+    {
+        return $this->belongsToMany(User::class, 'user_follow', 'following', 'user_id');
+    }
+
+    public function hasFollowUser($user_id, $id = false)
+    {
+        if(!$id) {
+            $id = $this->id;
+        }
+        // echo $user_id." ".$id;
+        // dd(DB::table('user_follow')->where('user_id', $id)->where('following', $id)->toSql());
+
+        return DB::table('user_follow')->where('user_id', $id)->where('following', $user_id)->get()->count() > 0;
+    }
+
+    public function followUser($user_id, $id = false)
+    {
+        if(!$id) {
+            $id = $this->id;
+        }
+
+        $user_follow = new UserFollow;
+        $user_follow->user_id = $id;
+        $user_follow->following = $user_id;
+        if($user_follow->save()) {
+            return true;
+        } else {
+            abort(504);
+        }
+    }
+
+    public function unfollowUser($user_id, $id = false)
+    {
+        if(!$id) {
+            $id = $this->id;
+        }
+
+        $user_follow = new UserFollow;
+        if($user_follow->where('user_id', $id)->where('following', $user_id)->delete()) {
+            return true;
+        } else {
+            abort(504);
+        }
+    }
     public function hasFollowBahasa($id)
     {
         return DB::table('bahasa_follows')->where('user_id', $this->id)

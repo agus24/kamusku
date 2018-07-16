@@ -11,6 +11,52 @@ $(document).ready(function() {
     makeAutoComplete('dari', src);
 });
 
+function bahasaSelect(event, el, more = false) {
+    let toChange = $('#lastBhsDr');
+    if(more) {
+        $('#tipe').val('dari')
+        $('#modalBahasa').modal('show');
+    } else {
+        let id = $(el).attr('bahasa');
+        removeActive();
+        $(el).addClass('active');
+        $('#cmb-dari').val(id);
+    }
+}
+
+function bahasaSelectKe(event, el, more = false) {
+    let toChange = $('#lastBhsDr');
+    if(more) {
+        $('#tipe').val('ke')
+        $('#modalBahasa').modal('show');
+    } else {
+        let id = $(el).attr('bahasa');
+        removeActive(true);
+        $(el).addClass('active');
+        $('#cmb-ke').val(id);
+    }
+}
+
+function pilihBahasa(id, nama) {
+    let tipe = $('#tipe').val();
+    if(tipe == 'dari') {
+        $('#lastBhsDr').text(nama);
+        removeActive();
+        $('#lastBhsDr').addClass('active');
+        $('#lastBhsDr').attr('bahasa', id);
+        console.log(id);
+        $('#cmb-dari').val(id);
+        $('#modalBahasa').modal('hide');
+    } else {
+        $('#lastBhsKe').text(nama);
+        removeActive(true);
+        $('#lastBhsKe').addClass('active');
+        $('#lastBhsKe').attr('bahasa', id);
+        $('#cmb-ke').val(id);
+        $('#modalBahasa').modal('hide');
+    }
+}
+
 function loadKata(bahasa) {
     console.log('masuk')
     let id = bahasa.val();
@@ -50,10 +96,13 @@ function getTranslateData(dari, ke, kata) {
         let data = response
         let output = $('#detail-ke');
         console.log(response);
+        $('#topResult').empty();
         if(data.length != 0) {
-            $('#topResult').empty();
             let topResult = data[0];
+            console.log(topResult);
             $('#topResult').append(topResult.dari_kata.bahasa_id != ke ? topResult.tujuan_kata.kata : topResult.dari_kata.kata);
+            $('#topResult').append("<br><i>Contoh Kalimat :</i> <br>");
+            $('#topResult').append(topResult.dari_kata.bahasa_id != ke ? topResult.tujuan_kata.contoh_kalimat : topResult.dari_kata.contoh_kalimat);
             $('#detail-ke').empty();
             let html = `<span style="font-size:16px; font-weight:bold">Terjemahan Lain</span><ul style="list-style: none;">`;
             if(data.length > 1) {
@@ -67,8 +116,24 @@ function getTranslateData(dari, ke, kata) {
                 html += `</ul>`;
                 $('#detail-ke').append(html);
             }
+        } else {
+            $('#topResult').append("<span style='color:red'>Tidak ada terjemahan</span>");
         }
     }).fail((error) => {
         alert(error)
     })
+}
+
+function removeActive(type = false) {
+    if(type) {
+        let tabs = $('.second .tablinks')
+        for(let i = 0 ; i < tabs.length ; i++) {
+            $(tabs[i]).removeClass('active');
+        }
+    } else {
+        let tabs = $('.first .tablinks')
+        for(let i = 0 ; i < tabs.length ; i++) {
+            $(tabs[i]).removeClass('active');
+        }
+    }
 }

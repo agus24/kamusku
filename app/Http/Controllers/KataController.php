@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Bahasa;
 use App\Katum as Kata;
+use Illuminate\Http\Request;
 
 class KataController extends Controller
 {
@@ -46,13 +47,14 @@ class KataController extends Controller
      */
     public function show($id)
     {
+        $bahasa = Bahasa::find($id);
         $kata = Kata::where('bahasa_id', $id);
         if(isset($_GET['search'])) {
             $search = $_GET['search'];
             $kata = $kata->where('kata', 'like', "%$search%");
         }
         $kata = $kata->paginate(15);
-        return view('kata.show', compact('kata'));
+        return view('kata.show', compact('kata', 'bahasa'));
     }
 
     /**
