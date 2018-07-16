@@ -73,7 +73,7 @@ class RegisterController extends Controller
 
         $this->guard()->login($user);
 
-        Mail::to($user->email)->send(new UserRegistered($user));
+        // Mail::to($user->email)->send(new UserRegistered($user));
 
         return $this->registered($request, $user)
                         ?: redirect($this->redirectPath());

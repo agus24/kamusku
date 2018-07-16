@@ -54,12 +54,7 @@
                             <button class="tablinks" onclick="bahasaSelect(event, this)" id="lastBhsDr" bahasa="3">Jawa</button>
                             <button class="tablinks" onclick="bahasaSelect(event, this, true)">More <i class="fas fa-caret-down"></i></button>
                         </div>
-                        <input type="hidden" id="cmb-dari" val="1">
-                        {{-- <select class="form-control" style="font-weight:bold;" id="cmb-dari">
-                            @foreach($bahasa as $value)
-                                <option value="{{ $value->id }}">{{ $value->nama }}</option>
-                            @endforeach
-                        </select> --}}
+                        <input type="hidden" id="cmb-dari" value="1">
                     </div>
                     <div class="col-md-4 pull-right" style="text-align:left">
                         <div class="tab second">
@@ -68,12 +63,7 @@
                             <button class="tablinks" onclick="bahasaSelectKe(event, this)" id="lastBhsKe" bahasa="3">Jawa</button>
                             <button class="tablinks" onclick="bahasaSelectKe(event, this, true)">More <i class="fas fa-caret-down"></i></button>
                         </div>
-                        <input type="hidden" id="cmb-ke" val="1">
-                        {{-- <select class="form-control" style="font-weight:bold;" id="cmb-ke">
-                            @foreach($bahasa as $value)
-                                <option value="{{ $value->id }}">{{ $value->nama }}</option>
-                            @endforeach
-                        </select> --}}
+                        <input type="hidden" id="cmb-ke" value="1">
                     </div>
                     <div class="col-md-2 form-group">
                         <button class="btn btn-primary" id="btnTranslate">
