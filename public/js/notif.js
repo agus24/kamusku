@@ -13,7 +13,11 @@ function loadNotif() {
             $('#navbarDropdown').addClass('has-notif');
         }
         $.each(result, (key,value) => {
-            html += `<li style="padding: 10px">
+            let style = '';
+            if(value.read_at == null) {
+                style = "background-color: #ffafaf;";
+            }
+            html += `<li style="padding: 10px;`+style+`">
                 <a href="`+Url+`/`+value.data.tipe+`/`+value.data.id+`?notif_id=`+value.id+`">
                     User `+value.data.user.name+` Telah `+value.data.text+`
                     <span style="float:right">`+value.diff+`</span>
@@ -29,5 +33,5 @@ function loadNotif() {
 
 if(User.id != undefined) {
     loadNotif(User.id);
-    setInterval(loadNotif, 5000);
+    // setInterval(loadNotif, 5000);
 }

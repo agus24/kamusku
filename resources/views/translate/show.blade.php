@@ -80,6 +80,7 @@
                                 <div class="col-md-10">
                                     {!! $comment->comment !!}
                                     <br>
+                                    @php Carbon\Carbon::setLocale('id'); @endphp
                                     <span style="color:gray;font-size:12px">{{ $comment->created_at->diffForHumans() }}</span>
                                 </div>
                         </div>

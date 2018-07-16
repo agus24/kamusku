@@ -29,13 +29,13 @@
         font-size: 15px;
     }
     .ganjil {
-        background-color: #bdbdff;
-        padding: 5px 5px 5px 5px;
+        background-color: #d9fff5;
+        padding: 0px 5px 0px 5px;
     }
 
     .genap {
         background-color: white;
-        padding: 5px 5px 5px 5px;
+        padding: 0px 5px 0px 5px;
     }
 
     .todo-search:before {
@@ -518,11 +518,21 @@ function generateComment(el, data, id)
         if(i%2 != 0 ) { tipe = "ganjil" } else { tipe = "genap" }
         html += `<div class="comment `+tipe+`">`
         html += `
-            <h5><b>`+value.user.name+`</b></h5>
-            <span style="font-size:12px">`+value.created_at+`</span>
-            <p>`+value.comment+`</p>
+            <div class="row">
+                <div class="col-md-1">
+                    <img src="{{ asset('storage/') }}/`+value.user.avatar+`" onerror="this.src='{{ asset('storage/no-image.png') }}'" style="margin-top: 11px;" width="50px">
+                </div>
+                <div class="col-md-11">
+                <span style='font-size:15px;font-weight:bold'>
+                    <a href="{{ url('profile/') }}/`+value.user.id+`"><b>`+value.user.name+`</b></a><br>
+                    <span style="font-size:10px">`+value.diff+`</span>
+                </span>
+                <p>`+value.comment+`</p>
+                </div>
+            </div>
         `
         html += "</div>";
+        html += "<hr>";
         i++;
     });
     el.append(html);

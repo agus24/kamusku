@@ -25,6 +25,6 @@ class TranslateComment extends Model
 
     public function getComment($translate_id)
     {
-        return $this->with('user')->where('translate_id', $translate_id)->get();
+        return $this->with('user')->where('translate_id', $translate_id)->orderBy('created_at', 'desc')->get();
     }
 }

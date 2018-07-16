@@ -32,7 +32,7 @@
             </h5>
             <div class="row">
                 <div class="col-md-2">
-                    <img src="{{ asset('storage/'.$user->avatar) }}" width="100px" class="profile-picture"><br>
+                    <img src="{{ asset('storage/'.$user->avatar) }}" onerror="this.src='{{ asset('storage/no-image.png') }}'" width="100px" class="profile-picture"><br>
                     <b>{{ $user->name }}</b>
                 </div>
                 <div class="col-md-10">

@@ -15,7 +15,8 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        $notif = User::find($_GET['user_id'])->unreadNotifications;
+        Carbon::setLocale('id');
+        $notif = User::find($_GET['user_id'])->notifications;
         $notif->map(function($value) {
             $value->diff = Carbon::parse($value->created_at)->diffForHumans();
             return $value;

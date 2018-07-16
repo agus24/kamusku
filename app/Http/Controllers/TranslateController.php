@@ -10,6 +10,7 @@ use App\Translate;
 use App\TranslateComment;
 use App\User;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TranslateController extends Controller
@@ -151,7 +152,11 @@ class TranslateController extends Controller
 
     public function loadComment(Request $request)
     {
-        $comments = TranslateComment::instance()->getComment($request->translate_id);
+        Carbon::setLocale('id');
+        $comments = TranslateComment::instance()->getComment($request->translate_id)->map(function($value) {
+            $value->diff = $value->created_at->diffForHumans();
+            return $value;
+        });
         return $comments;
     }
 
