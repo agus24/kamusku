@@ -50,7 +50,6 @@
                     <div class="col-md-6 pull-left">
                         <div class="tab first">
                             <button class="tablinks active" onclick="bahasaSelect(event, this)" bahasa="1">Indonesia</button>
-                            <button class="tablinks" onclick="bahasaSelect(event, this)" bahasa="2">Sunda</button>
                             <button class="tablinks" onclick="bahasaSelect(event, this)" id="lastBhsDr" bahasa="3">Jawa</button>
                             <button class="tablinks" onclick="bahasaSelect(event, this, true)">More <i class="fas fa-caret-down"></i></button>
                         </div>
@@ -59,7 +58,6 @@
                     <div class="col-md-4 pull-right" style="text-align:left">
                         <div class="tab second">
                             <button class="tablinks active" onclick="bahasaSelectKe(event, this)" bahasa="1">Indonesia</button>
-                            <button class="tablinks" onclick="bahasaSelectKe(event, this)" bahasa="2">Sunda</button>
                             <button class="tablinks" onclick="bahasaSelectKe(event, this)" id="lastBhsKe" bahasa="3">Jawa</button>
                             <button class="tablinks" onclick="bahasaSelectKe(event, this, true)">More <i class="fas fa-caret-down"></i></button>
                         </div>

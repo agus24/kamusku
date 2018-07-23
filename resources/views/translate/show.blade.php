@@ -7,8 +7,11 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12" style="text-align: right">
                             @if(!Auth::guest())
+                            <button class="btn btn-danger" onclick="window.location.href='{{ url('report/'.$translate->id) }}'">
+                                <i class="fas fa-exclamation-triangle"></i> Laporkan
+                            </button>
                             @if(Auth::user()->status == 1)
                                 @php $hasFollow = Auth::user()->hasFollowBahasa($translate->dariKata->bahasa->id); $tipeFollow = $hasFollow ? "unfollow" : "follow"; @endphp
                                 <button class="btn btn-{{$hasFollow ? "danger" : "success"}}"
@@ -28,11 +31,13 @@
                             <br>
                         </div>
                         <div class="col-md-2">
-                            <img src="{{ asset('storage/'.$translate->user->avatar) }}" width="50%"><br>
-                            <span style="font-size:15px">
-                                <b>{{ $translate->user->name }}</b>
-                            </span><br>
-                            <button class="btn btn-{{ ($hasLike) ? "danger" : "default" }}"
+                            <a href="{{ url('profile/'.$translate->user->id) }}">
+                                <img src="{{ asset('storage/'.$translate->user->avatar) }}" width="50%" onerror="this.src='{{ asset('storage/no-image.png') }}'"><br>
+                                <span style="font-size:15px">
+                                    <b>{{ $translate->user->name }}</b>
+                                </span><br>
+                            </a>
+                            <button class="btn btn-{{ ($hasLike) ? "danger" : "primary" }}"
                                 {{ Auth::guest() ? "disabled" : "" }}
                                 onclick="window.location.href='{{url('terjemahan/'.$id.'/like')}}'"
                             >

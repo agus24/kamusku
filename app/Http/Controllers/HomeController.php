@@ -89,6 +89,7 @@ class HomeController extends Controller
         if(isset($_GET['notif_id'])) {
             DB::table('notifications')->where('id', $_GET['notif_id'])->update(['read_at' => Carbon::now()]);
         }
+
         if(!Auth::guest()) {
             $hasLike = Auth::user()->hasLike($id);
         } else {

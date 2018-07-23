@@ -24,22 +24,25 @@
                         <label>Profile Picture</label>
                         <input type="file" name="img" id="img" class="form-control">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group {{ $errors->has('nama') ? "has-error" : "" }}">
                         <label>Nama</label>
                         <input type="Text" name="nama" placeholder="nama" value="{{ $user->name }}" class="form-control">
+                        {!! $errors->first('nama', '<p class="help-block">:message</p>') !!}
                     </div>
-                    <div class="form-group">
+                    <div class="form-group {{ $errors->has('password') ? "has-error" : "" }}">
                         <label>Password</label>
                         <input type="password" name="password" placeholder="Password" class="form-control">
+                        {!! $errors->first('password', '<p class="help-block">:message</p>') !!}
                     </div>
-                    <div class="form-group">
+                    <div class="form-group {{ $errors->has('password_confirmation') ? "has-error" : "" }}">
                         <label>Password Confirmation</label>
                         <input type="password" name="password_confirmation" placeholder="Confirm Password" class="form-control">
+                        {!! $errors->first('password_confirmation', '<p class="help-block">:message</p>') !!}
                     </div>
                     <div class="form-group">
                         <label>About Me</label>
                         <textarea class="form-control" name="about_me" rows="10" id="myEditor">
-                            {!! $user->about_me !!}
+                            {!! old('about_me', $user->about_me) !!}
                         </textarea>
                     </div>
                     <div class="form-group">

@@ -52,6 +52,9 @@ Route::get('unfollow/{id}', "ProfileController@unfollow");
 Route::get('report/{id}', "HomeController@reportForm");
 Route::post('report/{id}', "HomeController@report");
 
+Route::get('profile/following/{user_id}', 'ProfileController@getFollowingList');
+Route::get('profile/followers/{user_id}', 'ProfileController@getFollowersList');
+
 Route::get('test', function() {
     Auth::user()->notify(new \App\Notifications\LikeTranslate(1, App\User::find(2)));
 });
