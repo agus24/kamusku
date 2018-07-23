@@ -73,7 +73,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <b style="font-size:25px; color:#1abc9c">Terjemahan</b>
+                    {{-- <b style="font-size:25px; color:#1abc9c">Terjemahan</b> --}}
                     <ul class="list-group">
                         @foreach($trans as $translate)
                         <li class="list-group-item">
