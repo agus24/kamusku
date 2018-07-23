@@ -115,37 +115,44 @@
                                         <li><i>Diharapkan untuk tidak menambahkan terjemahan yang bersifat SARA pada terjemahan maupun pada contoh kalimat</i></li>
                                     </ul>
                                     {!! csrf_field() !!}
-                                    <div class="form-group">
-                                        <label>Bahasa awal</label>
-                                        <select class="form-control" name="dari_bahasa" id="dari_bahasa" required>
-                                            <option value="">Select</option>
-                                            @foreach($bahasa as $bhs)
-                                                <option value="{{$bhs->id}}">{{$bhs->nama}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Bahasa Tujuan</label>
-                                        <select class="form-control" name="tujuan_bahasa" required>
-                                            <option value="">Select</option>
-                                            @foreach($bahasa as $bhs)
-                                                <option value="{{$bhs->id}}">{{$bhs->nama}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="form-group" id="kata_group">
-                                        <label>Kata</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="text_kata" value="" required>
-                                            <input type="hidden" name="kata_id" id="hdn_kata" value="" required>
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-default" type="button" onclick="searchKata()">Search</button>
-                                            </span>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Bahasa awal</label>
+                                                <select class="form-control" name="dari_bahasa" id="dari_bahasa" required>
+                                                    <option value="">Select</option>
+                                                    @foreach($bahasa as $bhs)
+                                                        <option value="{{$bhs->id}}">{{$bhs->nama}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="form-group" id="kata_group">
+                                                <label>Kata</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="text_kata" value="" required>
+                                                    <input type="hidden" name="kata_id" id="hdn_kata" value="" required>
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-default" type="button" onclick="searchKata()">Search</button>
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Arti</label>
-                                        <input type="text" class="form-control" name="translate" value="" required>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Bahasa Tujuan</label>
+                                                <select class="form-control" name="tujuan_bahasa" required>
+                                                    <option value="">Select</option>
+                                                    @foreach($bahasa as $bhs)
+                                                        <option value="{{$bhs->id}}">{{$bhs->nama}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Arti</label>
+                                                <input type="text" class="form-control" name="translate" value="" required>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Contoh Kalimat</label>
@@ -166,7 +173,7 @@
                                 <li><i>Kolom User : untuk menampilkan hasil terjemahan berdasarkan user yang anda ikuti</i></li>
                             </ul>
                         </div>
-                        <button class="btn btn-warning" id="tombolBantuan" state='hidden'>Tampilkan Bantuan</button>
+                        <i class="fas fa-question-circle" style="color:blue;cursor:pointer;text-align:right" id="tombolBantuan" state='hidden'>Tampilkan Bantuan</i>
                         <ul class="tabs" style="margin-top:10px">
                             <li><a href="#login" class="active" tipe="semua">Semua</a></li>
                             <li><a href="#register" tipe="bahasa">Bahasa</a></li>
@@ -344,6 +351,8 @@ function loadTranslate() {
                 oldTipe = tipe;
             }
             putToHtml(result.data);
+        }).fail(() => {
+            loadTranslate();
         });
     }
     loading = true;
@@ -361,7 +370,7 @@ function putToHtml(data) {
                 <div class="col-md-2">
                     <a href="{{ url('profile/') }}/`+value.user.id+`">
                         <center>
-                            <img src="{{ asset('storage/') }}/`+value.user.avatar+`" width="50%"><br>
+                            <img src="{{ asset('storage/') }}/`+value.user.avatar+`" onerror="this.src='{{ asset('storage/no-image.png') }}'" width="50%"><br>
                             <span style="font-size:15px">`+value.user.name+`</span>
                         </center>
                     </a>
@@ -369,8 +378,10 @@ function putToHtml(data) {
                 <div class="col-md-10">
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="{{ url('terjemahan') }}/`+value.id+`"><b>`+ value.dari_kata.kata +` - `+ value.tujuan_kata.kata +`</b></a><Br>
-                            Translate dari <i>`+ value.dari_kata.bahasa.nama +`</i> ke <i>`+ value.tujuan_kata.bahasa.nama +`</i><br>
+                            <a href="{{ url('terjemahan') }}/`+value.id+`"><b>`+ value.dari_kata.kata +` - `+ value.tujuan_kata.kata +`</b></a>
+                        </div>
+                        <div class="col-md-12">
+                            Translate dari <i>`+ value.dari_kata.bahasa.nama +`</i> ke <i>`+ value.tujuan_kata.bahasa.nama +`</i>
                         </div>
                         @if(!Auth::guest())
                         @if(Auth::user()->status == 1)
@@ -382,11 +393,6 @@ function putToHtml(data) {
                         <div class="col-md-2 comment-icon" onclick='toggleComment(this, `+value.id+`)'>
                             <span class="off"><i class="fas fa-comments"></i> Komentar</span>
                         </div>
-                        @if(!Auth::guest())
-                        <div class="col-md-2 comment-icon" onclick='window.location.href = "{{ url('report/') }}/`+value.id+`"'>
-                            <span class="off" style="color:red"><i class="fas fa-exclamation-triangle"></i> Laporkan</span>
-                        </div>
-                        @endif
                         <div class="col-md-12">
                             <span id="comment-section`+value.id+`"></span>
                         </div>

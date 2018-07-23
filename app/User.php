@@ -31,12 +31,17 @@ class User extends \TCG\Voyager\Models\User
 
     public function getFollowers()
     {
-        return $this->belongsToMany(User::class, 'user_follow', 'user_id', 'following');
+        return $this->belongsToMany(User::class, 'user_follow', 'following', 'user_id');
     }
 
     public function getFollowing()
     {
-        return $this->belongsToMany(User::class, 'user_follow', 'following', 'user_id');
+        return $this->belongsToMany(User::class, 'user_follow', 'user_id', 'following');
+    }
+
+    public function translate()
+    {
+        return $this->hasMany(Translate::class, 'user_id', 'id');
     }
 
     public function hasFollowUser($user_id, $id = false)
@@ -44,8 +49,6 @@ class User extends \TCG\Voyager\Models\User
         if(!$id) {
             $id = $this->id;
         }
-        // echo $user_id." ".$id;
-        // dd(DB::table('user_follow')->where('user_id', $id)->where('following', $id)->toSql());
 
         return DB::table('user_follow')->where('user_id', $id)->where('following', $user_id)->get()->count() > 0;
     }

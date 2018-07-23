@@ -15,7 +15,8 @@ class ProfileController extends Controller
      */
     public function index(User $user)
     {
-        return view('profile.index', compact('user'));
+        $trans = $user->translate()->orderBy('created_at', 'desc')->paginate(5);
+        return view('profile.index', compact('user', 'trans'));
     }
 
     /**
@@ -49,6 +50,7 @@ class ProfileController extends Controller
             "password" => "required|same:password_confirmation",
             "password_confirmation" => "required"
         ]);
+
         $user = User::find($id);
 
         if($request->file('img')) {
@@ -94,4 +96,21 @@ class ProfileController extends Controller
         User::find(Auth::user()->id)->unfollowUser($id);
         return redirect()->back();
     }
+
+    public function getFollowingList($user_id)
+    {
+        $user = User::find($user_id);
+        $follow = $user->getFollowing()->orderBy('created_at', 'desc')->get();
+
+        return view('profile.follow', compact('follow', 'user'));
+    }
+
+    public function getFollowersList($user_id)
+    {
+        $user = User::find($user_id);
+        $follow = $user->getFollowers()->orderBy('created_at', 'desc')->get();
+
+        return view('profile.follow', compact('follow', 'user'));
+    }
+
 }
