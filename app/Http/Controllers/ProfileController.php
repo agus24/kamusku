@@ -47,11 +47,13 @@ class ProfileController extends Controller
     {
         $this->validate($request, [
             "nama" => "required",
-            "password" => "required|same:password_confirmation",
-            "password_confirmation" => "required"
+            "password" => "same:password_confirmation",
+            // "password_confirmation" => "required"
         ]);
 
         $user = User::find($id);
+        $password = $user->password;
+        $forceLogout = false;
 
         if($request->file('img')) {
             $file = $request->file('img');
@@ -60,10 +62,18 @@ class ProfileController extends Controller
         }
 
         $user->name = $request->nama;
-        $user->password = bcrypt($request->password);
+        if($request->password != ''){
+            $user->password = bcrypt($request->password);
+            $forceLogout = true;
+        } else {
+            $user->password = $password;
+        }
         $user->about_me = $request->about_me;
         $user->save();
-        return redirect('/');
+        if($forceLogout) {
+            Auth::logout();
+        }
+        return redirect('/profile/'.$id);
     }
 
     /**

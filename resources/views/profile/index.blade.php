@@ -49,6 +49,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
+                            @if(!Auth::guest())
                             @if(Auth::user()->id != $user->id && Auth::user()->status == 1)
                                 @php
                                     $statusFollow = 1;
@@ -59,6 +60,7 @@
                                     <i class="fas fa-user-{{ $statusFollow ? "times" : "plus" }}"></i>&nbsp;
                                     {{ $statusFollow ? "Unfollow" : "Follow" }}
                                 </a>
+                            @endif
                             @endif
                         </div>
                     </div><br>

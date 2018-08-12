@@ -248,7 +248,7 @@
                                     <h4 class="todo-name">
                                         {{ $pop->user->name }}
                                     </h4>
-                                    <span style="color:green">{{ $pop->total_kontribusi }} Terjemahan</span>
+                                    <span style="color:chartreuse">{{ $pop->total_kontribusi }} Terjemahan</span>
                                 </div>
                             </li>
                         @endforeach
