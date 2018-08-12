@@ -9,9 +9,9 @@
                     <ul class="list-group">
                     @foreach($follow as $value)
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <img src="{{ asset('storage/'.$value->avatar) }}" width="100px" style="border-radius:50px">
-                                <span style=" font-weight:bold">{{ $value->name }}</span>
+                            <div onclick="window.location.href='{{ url('profile/'.$value->id) }}'" style="cursor:pointer">
+                                <img src="{{ asset('storage/'.$value->avatar) }}" onerror="this.src='{{ asset('storage/no-image.png') }}'" width="50px" style="border-radius:50px">
+                                <span style=" font-weight:bold;color:blue">{{ $value->name }}</span>
                             </div>
                             @if(!Auth::guest())
                             @if(Auth::user()->id == $user->id)

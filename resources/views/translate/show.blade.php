@@ -66,6 +66,7 @@
                             <div class="col-md-12">
                                 <form action="{{ url('comment/'.$id) }}" method="POST">
                                     {!! csrf_field() !!}
+                                    <input type="hidden" name="translate_id" value="{{$translate->id}}">
                                     <input id='comment-box' class='form-control' name="comment" placeholder='Tulis Komentar Anda' type="text" required>
                                 </form>
                             </div>
@@ -76,7 +77,7 @@
                             <div class="row">
                                 <div class="col-md-2">
                                     <center>
-                                        <img src="{{ asset('storage/'.$comment->user->avatar) }}" width="25%"><br>
+                                        <img src="{{ asset('storage/'.$comment->user->avatar) }}" width="25%" onerror="this.src='{{ asset('storage/no-image.png') }}'"><br>
                                         <span style="font-size:15px">
                                             <b>{{ $comment->user->name }}</b>
                                         </span>

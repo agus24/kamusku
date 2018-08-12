@@ -87,7 +87,8 @@ class HomeController extends Controller
     public function show($id)
     {
         if(isset($_GET['notif_id'])) {
-            DB::table('notifications')->where('id', $_GET['notif_id'])->update(['read_at' => Carbon::now()]);
+            $notif = DB::table('notifications')->where('id', $_GET['notif_id']);
+            $notif->update(['read_at' => Carbon::now()]);
         }
 
         if(!Auth::guest()) {

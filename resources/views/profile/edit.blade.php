@@ -30,12 +30,12 @@
                         {!! $errors->first('nama', '<p class="help-block">:message</p>') !!}
                     </div>
                     <div class="form-group {{ $errors->has('password') ? "has-error" : "" }}">
-                        <label>Password</label>
+                        <label>Password <sub style="color:red">(kosongkan jika tidak ingin mengganti password)</sub></label>
                         <input type="password" name="password" placeholder="Password" class="form-control">
                         {!! $errors->first('password', '<p class="help-block">:message</p>') !!}
                     </div>
                     <div class="form-group {{ $errors->has('password_confirmation') ? "has-error" : "" }}">
-                        <label>Password Confirmation</label>
+                        <label>Password Confirmation <sub style="color:red">(kosongkan jika tidak ingin mengganti password)</sub></label>
                         <input type="password" name="password_confirmation" placeholder="Confirm Password" class="form-control">
                         {!! $errors->first('password_confirmation', '<p class="help-block">:message</p>') !!}
                     </div>
