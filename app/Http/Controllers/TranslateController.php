@@ -119,15 +119,18 @@ class TranslateController extends Controller
         $data = $request;
         $translate = new Translate;
         $result = $translate->with('tujuanKata', 'dariKata', 'user')
-            ->join('kata as a', 'a.id','dari')
-            ->join('kata as b', 'b.id','tujuan')
+            ->join('kata as a', 'a.id', 'dari')
+            ->join('kata as b', 'b.id', 'tujuan')
             ->where('a.bahasa_id', $data['dari'])
-            ->where('b.bahasa_id', $data['ke'])
-            ->where('a.kata', "like", $data['kata'])
-            ->orWhere('b.kata', "like", $data['kata'])
+            ->orwhere('b.bahasa_id', $data['ke'])
+            ->where(function($query) use($data) {
+                $query->where('a.kata', "like", $data['kata']);
+                $query->orWhere('b.kata', "like", $data['kata']);
+            })
             ->orderBy('rate','desc')
             ->select('translate.*')
             ->get();
+        return $result;
 
         if(!$result) {
             $status = 504;
