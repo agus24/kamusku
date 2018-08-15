@@ -1,0 +1,86 @@
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: $red-light;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    background-color: $red-light;
+    color: $brand-white;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #fb9898;
+    color: #ffffff
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: $turquoise;
+    color: white;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+
+.tabs {
+  background: #fba9a9;
+  height: 51px;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  width: 100%;
+  position: relative;
+  display: block;
+  margin-bottom: 20px;
+}
+.tabs li {
+  display: block;
+  float: left;
+  margin: 0;
+  padding: 0;
+  width: 33%;
+}
+.tabs a {
+  background: #fba9a9;
+  display: block;
+  float: left;
+  text-decoration: none;
+  color: white;
+  text-align:center;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 22px 12px 22px;
+  /*border-right: 1px solid @tab-border;*/
+
+}
+.tabs li:last-child a {
+  border-right: none;
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+  text-align: center;
+}
+.tabs a.active {
+  background: $brand-primary;
+  border-right: none;
+  width: 100%;
+  -webkit-transition: all 0.5s linear;
+    -moz-transition: all 0.5s linear;
+    transition: all 0.5s linear;
+}

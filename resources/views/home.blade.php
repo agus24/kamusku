@@ -49,52 +49,6 @@
     .todo li:after {
         display:none
     }
-    .tabs {
-      background: #34485d;
-      height: 51px;
-      margin: 0;
-      padding: 0;
-      list-style-type: none;
-      width: 100%;
-      position: relative;
-      display: block;
-      margin-bottom: 20px;
-    }
-    .tabs li {
-      display: block;
-      float: left;
-      margin: 0;
-      padding: 0;
-      width: 33%;
-    }
-    .tabs a {
-      background: #34485d;
-      display: block;
-      float: left;
-      text-decoration: none;
-      color: white;
-      text-align:center;
-      width: 100%;
-      font-size: 16px;
-      padding: 12px 22px 12px 22px;
-      /*border-right: 1px solid @tab-border;*/
-
-    }
-    .tabs li:last-child a {
-      border-right: none;
-      padding-left: 0;
-      padding-right: 0;
-      width: 100%;
-      text-align: center;
-    }
-    .tabs a.active {
-      background: #41bc9c;
-      border-right: none;
-      width: 100%;
-      -webkit-transition: all 0.5s linear;
-    	-moz-transition: all 0.5s linear;
-    	transition: all 0.5s linear;
-    }
 </style>
 @endsection
 @section('content')
@@ -164,7 +118,7 @@
                             </div>
                         </div>
                         <hr>
-                        <div style="display:none" id="bantuan">
+                        <div style="display:none;color:black" id="bantuan">
                             <h5>Tabs</h5>
                             <span style="font-size:14px">Dibawah ini merupakan tabs untuk melakukan filter pada home.</span>
                             <ul style="font-size:12px">
@@ -173,7 +127,7 @@
                                 <li><i>Kolom User : untuk menampilkan hasil terjemahan berdasarkan user yang anda ikuti</i></li>
                             </ul>
                         </div>
-                        <i class="fas fa-question-circle" style="color:blue;cursor:pointer;text-align:right" id="tombolBantuan" state='hidden'>Tampilkan Bantuan</i>
+                        <i class="fas fa-question-circle help" id="tombolBantuan" state='hidden'> Tampilkan Bantuan</i>
                         <ul class="tabs" style="margin-top:10px">
                             <li><a href="#login" class="active" tipe="semua">Semua</a></li>
                             <li><a href="#register" tipe="bahasa">Bahasa</a></li>
@@ -206,7 +160,7 @@
                                     <h4 class="todo-name">
                                         {{ $terjemahan_terhangat->dariKata->kata }} - {{ $terjemahan_terhangat->tujuanKata->kata }}
                                     </h4>
-                                    <span style="color:white">{{ $terjemahan_terhangat->total_komentar }} Komentar</span>
+                                    <span class="blue">{{ $terjemahan_terhangat->total_komentar }} Komentar</span>
                                 </div>
                             </li>
                         @endforeach
@@ -227,7 +181,7 @@
                                 <h4 class="todo-name">
                                     {{ $terjemahan_populer->dariKata->kata }} - {{ $terjemahan_populer->tujuanKata->kata }}
                                 </h4>
-                                <span style="color:red">{{ $terjemahan_populer->rate }} Like</span>
+                                <span class="red">{{ $terjemahan_populer->rate }} Like</span>
                             </div>
                         </li>
                     @endforeach
@@ -248,7 +202,7 @@
                                     <h4 class="todo-name">
                                         {{ $pop->user->name }}
                                     </h4>
-                                    <span style="color:chartreuse">{{ $pop->total_kontribusi }} Terjemahan</span>
+                                    <span class="green">{{ $pop->total_kontribusi }} Terjemahan</span>
                                 </div>
                             </li>
                         @endforeach
@@ -267,11 +221,11 @@
 $('#tombolBantuan').click(() => {
     let state = $('#tombolBantuan').attr('state');
     if(state == 'hidden') {
-        $('#tombolBantuan').text("Sembunyikan Bantuan");
+        $('#tombolBantuan').text(" Sembunyikan Bantuan");
         $('#bantuan').fadeIn();
         $('#tombolBantuan').attr('state', 'shown')
     } else {
-        $('#tombolBantuan').text("Tampilkan Bantuan");
+        $('#tombolBantuan').text(" Tampilkan Bantuan");
         $('#bantuan').fadeOut();
         $('#tombolBantuan').attr('state', 'hidden')
     }
