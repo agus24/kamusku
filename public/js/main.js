@@ -46,6 +46,7 @@ function pilihBahasa(id, nama) {
         $('#lastBhsDr').attr('bahasa', id);
         console.log(id);
         $('#cmb-dari').val(id);
+        $('#cmb-dari').trigger('change');
         $('#modalBahasa').modal('hide');
     } else {
         $('#lastBhsKe').text(nama);

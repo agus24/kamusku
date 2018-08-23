@@ -130,7 +130,6 @@ class TranslateController extends Controller
             ->orderBy('rate','desc')
             ->select('translate.*')
             ->get();
-        return $result;
 
         if(!$result) {
             $status = 504;
