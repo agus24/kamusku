@@ -20,13 +20,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('bahasa', "Api\\BahasaController");
-Route::resource('kata', "Api\\KataController");
-Route::get('getTranslate', "TranslateController@getTranslateData");
+Route::resource('bahasa', 'Api\\BahasaController');
+Route::resource('kata', 'Api\\KataController');
+Route::get('getTranslate', 'TranslateController@getTranslateData');
 Route::get('loadTranslate', 'HomeController@load');
-Route::post('like', "TranslateController@like");
-Route::post('loadComment', "TranslateController@loadComment");
-Route::post('postComment', "TranslateController@postComment");
-Route::post('getKata', "TranslateController@getKata");
+Route::post('like', 'TranslateController@like');
+Route::post('loadComment', 'TranslateController@loadComment');
+Route::post('postComment', 'TranslateController@postComment');
+Route::post('getKata', 'TranslateController@getKata');
 
 Route::get('getNotif', 'NotificationController@index');

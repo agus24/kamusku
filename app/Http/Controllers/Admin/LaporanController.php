@@ -16,13 +16,13 @@ class LaporanController extends Controller
     public function index()
     {
         $laporan = Report::orderBy('reports.created_at', 'desc');
-        if(isset($_GET['search'])) {
+        if (isset($_GET['search'])) {
             $laporan = $laporan->leftJoin('translate', 'translate.id', 'reports.translate_id')
                 ->leftJoin('kata as dariKata', 'dariKata.id', 'translate.dari')
                 ->leftJoin('kata as tujuanKata', 'tujuanKata.id', 'translate.tujuan')
                 ->leftJoin('bahasas as bahasaDari', 'bahasaDari.id', 'dariKata.bahasa_id')
                 ->leftJoin('bahasas as bahasaTujuan', 'bahasaTujuan.id', 'tujuanKata.bahasa_id')
-                ->leftJoin('users', 'users.id','reports.user_id');
+                ->leftJoin('users', 'users.id', 'reports.user_id');
 
             $laporan = $laporan->orWhere('dariKata.kata', 'like', "%{$_GET['search']}%")
                 ->orWhere('tujuanKata.kata', 'like', "%{$_GET['search']}%")
@@ -31,6 +31,7 @@ class LaporanController extends Controller
                 ->orWhere('users.name', 'like', "%{$_GET['search']}%");
         }
         $laporan = $laporan->select('reports.*')->paginate(15);
+
         return view('vendor.voyager.laporan.index', compact('laporan'));
     }
 
@@ -47,7 +48,8 @@ class LaporanController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -58,7 +60,8 @@ class LaporanController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -69,7 +72,8 @@ class LaporanController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -80,8 +84,9 @@ class LaporanController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -92,7 +97,8 @@ class LaporanController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Katum as Kata;
+use Illuminate\Http\Request;
 
 class KataController extends Controller
 {
@@ -15,11 +15,11 @@ class KataController extends Controller
      */
     public function index(Request $request)
     {
-        if(($request->input('bahasa_id') == NULL)) {
-            return resposne()->json([],404);
+        if (($request->input('bahasa_id') == null)) {
+            return resposne()->json([], 404);
         }
 
-        return response()->json(Kata::where('bahasa_id', $request->bahasa_id)->select('id','kata as value', 'kata as label')->get());
+        return response()->json(Kata::where('bahasa_id', $request->bahasa_id)->select('id', 'kata as value', 'kata as label')->get());
     }
 
     /**
@@ -35,7 +35,8 @@ class KataController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -46,7 +47,8 @@ class KataController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -57,7 +59,8 @@ class KataController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -68,8 +71,9 @@ class KataController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -80,7 +84,8 @@ class KataController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

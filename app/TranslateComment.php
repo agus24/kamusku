@@ -3,19 +3,18 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 class TranslateComment extends Model
 {
-    protected $table = "translate_comments";
-    protected $primaryKey = "id";
+    protected $table = 'translate_comments';
+    protected $primaryKey = 'id';
     protected $dates = [
-        'created_at', 'updated_at'
+        'created_at', 'updated_at',
     ];
 
     public static function instance()
     {
-        return new static;
+        return new static();
     }
 
     public function user()

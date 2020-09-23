@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateBahasaFollowsTable extends Migration
 {
@@ -19,8 +19,6 @@ class CreateBahasaFollowsTable extends Migration
             $table->integer('bahasa_id')->unsigned();
             $table->timestamps();
         });
-
-
     }
 
     /**

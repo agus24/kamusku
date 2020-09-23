@@ -2,13 +2,12 @@
 
 namespace App;
 
-use App\UserFollow;
 use Illuminate\Database\Eloquent\Model;
 
 class UserFollow extends Model
 {
-    protected $table = "user_follow";
-    protected $primaryKey = "id";
+    protected $table = 'user_follow';
+    protected $primaryKey = 'id';
 
     public function user()
     {

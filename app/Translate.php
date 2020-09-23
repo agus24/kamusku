@@ -2,15 +2,13 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Katum as Kata;
-use App\User;
-use App\TranslateComment;
+use Illuminate\Database\Eloquent\Model;
 
 class Translate extends Model
 {
-    protected $table = "translate";
-    protected $fillable = ["dari", "tujuan", "user_id", "rate"];
+    protected $table = 'translate';
+    protected $fillable = ['dari', 'tujuan', 'user_id', 'rate'];
 
     public function dariKata()
     {
@@ -40,15 +38,15 @@ class Translate extends Model
     public function getWith()
     {
         return $this->with(['user',
-                'dariKata' => function ($child) {
-                        return $child->with(["bahasa"]);
-                    },
-                'tujuanKata' => function ($child) {
-                        return $child->with(["bahasa"]);
-                    },
-                'rated' => function($child) {
-                    return $child->with(["user"]);
-                }
-            ]);
+            'dariKata' => function ($child) {
+                return $child->with(['bahasa']);
+            },
+            'tujuanKata' => function ($child) {
+                return $child->with(['bahasa']);
+            },
+            'rated' => function ($child) {
+                return $child->with(['user']);
+            },
+        ]);
     }
 }
