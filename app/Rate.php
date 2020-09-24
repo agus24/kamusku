@@ -2,14 +2,12 @@
 
 namespace App;
 
-use App\User;
-use App\Translate;
 use Illuminate\Database\Eloquent\Model;
 
 class Rate extends Model
 {
-    protected $primaryKey = "id";
-    protected $table = "translate_rates";
+    protected $primaryKey = 'id';
+    protected $table = 'translate_rates';
 
     public function user()
     {

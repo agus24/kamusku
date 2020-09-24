@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Bahasa;
-use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Http\Request;
 
 class BahasaController extends Controller
 {
@@ -15,12 +15,13 @@ class BahasaController extends Controller
      */
     public function index()
     {
-        $bahasa = new Bahasa;
-        if(isset($_GET['search'])) {
+        $bahasa = new Bahasa();
+        if (isset($_GET['search'])) {
             $bahasa = $bahasa->where('nama', 'LIKE', "%{$_GET['search']}%")
                 ->orWhere('daerah', 'LIKE', "%{$_GET['search']}%");
         }
         $bahasa = $bahasa->get();
+
         return view('bahasa.index', compact('bahasa'));
     }
 
@@ -37,7 +38,8 @@ class BahasaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -48,7 +50,8 @@ class BahasaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Model\Bahasa  $bahasa
+     * @param \App\Model\Bahasa $bahasa
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Bahasa $bahasa)
@@ -59,7 +62,8 @@ class BahasaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Model\Bahasa  $bahasa
+     * @param \App\Model\Bahasa $bahasa
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Bahasa $bahasa)
@@ -70,8 +74,9 @@ class BahasaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Model\Bahasa  $bahasa
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Model\Bahasa        $bahasa
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Bahasa $bahasa)
@@ -82,7 +87,8 @@ class BahasaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Model\Bahasa  $bahasa
+     * @param \App\Model\Bahasa $bahasa
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Bahasa $bahasa)
@@ -92,19 +98,21 @@ class BahasaController extends Controller
 
     public function follow($id)
     {
-        if(Auth::guest()) {
+        if (Auth::guest()) {
             abort(404);
         }
         $user = Auth::user()->follow($id);
+
         return redirect()->back();
     }
 
     public function unfollow($id)
     {
-        if(Auth::guest()) {
+        if (Auth::guest()) {
             abort(404);
         }
         $user = Auth::user()->unfollow($id);
+
         return redirect()->back();
     }
 }
